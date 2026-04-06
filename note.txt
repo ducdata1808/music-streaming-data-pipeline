@@ -1,0 +1,62 @@
+Step 1: eventsim
+- Clone repo: https://github.com/Interana/eventsim.git
+- download java 8 and sbt:
+    - echo "deb https://repo.scala-sbt.org/scalasbt/debian all main" | sudo tee /etc/apt/sources.list.d/sbt.list
+    - echo "deb https://repo.scala-sbt.org/scalasbt/debian /" | sudo tee -a /etc/apt/sources.list.d/sbt.list
+    - curl -sL "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x2EE0EA64E40A89B84B2DF73499E82A75642AC823" | sudo apt-key add
+    - sudo apt-get update
+    - sudo apt-get install openjdk-8-jdk scala sbt
+- change java version:
+    - sudo update-alternatives --config java
+- run: sbt assembly
+- grant permission for bin: chmod +x bin/eventsim
+- check path: target/scala-2.12/eventsim-assembly-2.0.jar and change path in bin: nano bin/eventsim: #! /bin/bash 
+java -XX:+AggressiveOpts -XX:+UseG1GC -XX:+UseStringDeduplication -Xmx4G -Duser.country=US -Duser.language=en -jar target/scala-2.12/eventsim-assembly-2.0.jar "$@"
+- check eventsim by getting .json file: bin/eventsim -c "examples/example-config.json" -n 100 test_data.json
+
+Step 2: Kafka
+- download: wget https://archive.apache.org/dist/kafka/3.6.1/kafka_2.13-3.6.1.tgz
+- extract: tar -xzf kafka_2.13-3.6.1.tgz
+- cd kafka_2.13-3.6.1
+- ternimal1: bin/zookeeper-server-start.sh config/zookeeper.properties
+- ternimal2: bin/kafka-server-start.sh config/server.properties
+- ternimal3: bin/kafka-topics.sh --create --topic music_events --bootstrap-server localhost:9092 --partitions 1 --replication-factor 1
+- because current scala version is not compatible with kafka, we need to use pipe 
+    stdbuf -oL bin/eventsim -c "examples/example-config.json" \ \
+    -n 2000 \
+    --start-time "2026-04-06T00:00:00" \
+    --end-time "2099-01-01T00:00:00" \
+    --continuous | stdbuf -i0 -oL /home/duc1808/kafka/kafka_2.13-3.6.1/bin/kafka-console-producer.sh --bootstrap-server localhost:9092 --topic music_events
+- terminal4: 
+    kafka/kafka_2.13-3.6.1/bin/kafka-console-consumer.sh \
+    --bootstrap-server localhost:9092 \
+    --topic music_events \
+    --from-beginning
+- problem: configurate volume for kafka to avoid data overload and retention period
+
+Step 3: Spark
+- download: wget https://archive.apache.org/dist/spark/spark-3.5.8/spark-3.5.8-bin-hadoop3.tgz
+- extract: tar -xzf spark-3.5.8-bin-hadoop3.tgz
+- cd spark-3.5.8-bin-hadoop3
+- nano bashrc
+    - export SPARK_HOME=/home/duc1808/spark-3.5.8-bin-hadoop3
+    - export PATH=$PATH:$SPARK_HOME/bin
+- source ~/.bashrc
+- check: spark-submit --version
+
+Step 4: MinIO
+- download: wget https://dl.min.io/server/minio/release/linux-amd64/minio
+- grant permission: chmod +x minio
+- create data storage: mkdir -p ~MinIO/minio_data
+- export MINIO_ROOT_USER=minioadmin
+- export MINIO_ROOT_PASSWORD=minioadmin
+- run: ./minio server ~MinIO/minio_data --console-address ":9001"
+- turn on browser and go to http://localhost:9001
+- login with username: minioadmin and password: minioadmin
+- create bucket: music_events
+
+Step 5: Run Spark Streaming
+- run: spark-submit --packages org.apache.spark:spark-sql-kafka-0-10_2.12:3.5.8,org.apache.hadoop:hadoop-aws:3.3.4,com.amazonaws:aws-java-sdk-bundle:1.12.262  --conf "spark.driver.host=127.0.0.1" run_spark.py
+
+
+
