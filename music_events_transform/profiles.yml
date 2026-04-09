@@ -1,0 +1,12 @@
+music_events_transform:
+  outputs:
+    dev:
+      type: clickhouse
+      host: localhost
+      port: 8123
+      user: default
+      password: ""
+      schema: music_analytics
+      database: music_analytics
+      secure: False
+  target: dev

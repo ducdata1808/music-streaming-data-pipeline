@@ -57,6 +57,9 @@ Step 4: MinIO
 
 Step 5: Run Spark Streaming
 - stand on project folder
+- ask spark to use python in venv: 
+    export PYSPARK_PYTHON=$(which python3)
+    export PYSPARK_DRIVER_PYTHON=$(which python3)
 - run: spark-submit --packages org.apache.spark:spark-sql-kafka-0-10_2.12:3.5.8,org.apache.hadoop:hadoop-aws:3.3.4,com.amazonaws:aws-java-sdk-bundle:1.12.262  --conf "spark.driver.host=127.0.0.1" run_spark.py
 
 Step 6: ClickHouse
@@ -103,6 +106,36 @@ LIMIT 5;
 - Solution: Convert ts to string in Spark and handle Datatime by DBT
 
 Step 7: DBT
+- download: activate venv and pip install -r requirements.txt
+- check dbt: dbt --version
+- create dbt project: dbt init music_events_transform
+- edit profiles.yml: nano profiles.yml
+    music_events_transform:
+  outputs:
+    dev:
+      type: clickhouse
+      host: localhost
+      port: 8123
+      user: default
+      password: ""
+      database: music_analytics
+      secure: False
+  target: dev
+- cd music_events_transform
+- dbt debug --profiles-dir ~/eventsim_project/music_events_transform : use profiles.yml in project folder instead of ~/.dbt/profiles.yml
+- delete example folder: rm -r models/example
+- create staging folder: mkdir models/staging -> clean raw data from clickhouse
+- create marts folder: mkdir models/marts -> create final data for analysis
+- create staging model: nano models/staging/stg_events.sql
+- create sources.yml: nano models/staging/sources.yml
+- cd music_events_transform
+- dbt compile --profiles-dir ~/eventsim_project/music_events_transform
+- dbt run --profiles-dir ~/eventsim_project/music_events_transform
+- dbt test --profiles-dir ~/eventsim_project/music_events_transform
+- after run sucessfully, check data in clickhouse: 
+    SHOW TABLES IN music_analytics;
+    SELECT * FROM stg_events LIMIT 5;
+
 
 Check error:
 - check kafka and zookeeper : jps

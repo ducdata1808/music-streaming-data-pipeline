@@ -1,0 +1,8 @@
+version: 2
+
+sources:
+  - name: music_analytics
+    database: music_analytics
+    schema: music_analytics
+    tables:
+      - name: events

@@ -26,7 +26,7 @@ CHECKPOINT_PATH = "/tmp/checkpoints/music-events" # checkpoint path
 logging.basicConfig(level=logging.INFO,
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
                     filename=LOG_FILE,
-                    filemode="w")
+                    filemode="a")
 logger = logging.getLogger("spark_streaming")
 
 # print message with color
