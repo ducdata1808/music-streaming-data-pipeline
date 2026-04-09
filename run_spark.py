@@ -17,24 +17,30 @@ class Background_colors:
     CYAN = "\033[46m"
     END = "\033[0m"
 
-VERBOSE = True
+VERBOSE = True # show log message
+LOG_FILE = "run_spark.log" # log file name
+MINIO_BUCKET = "music-events" # minio bucket name
+CHECKPOINT_PATH = "/tmp/checkpoints/music-events" # checkpoint path
 
+# setup log file
 logging.basicConfig(level=logging.INFO,
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-                    filename="run_spark.log",
+                    filename=LOG_FILE,
                     filemode="w")
 logger = logging.getLogger("spark_streaming")
 
+# print message with color
 def verbose_output(message: str) -> None:
     if VERBOSE:
         print(f"{message}{Background_colors.END}")
 
+# create spark session
 def create_spark_session() -> SparkSession:
     try:
         spark = SparkSession.builder \
             .appName("SparkStreamingToMinIO") \
             .config("spark.jars.packages", "org.apache.hadoop:hadoop-aws:3.3.4,org.apache.spark:spark-sql-kafka-0-10_2.12:3.5.8") \
-            .config("spark.hadoop.fs.s3a.endpoint", "http://127.0.0.1:9000") \
+            .config("spark.hadoop.fs.s3a.endpoint", "http://127.0.0.1:9050") \
             .config("spark.hadoop.fs.s3a.access.key", "minioadmin") \
             .config("spark.hadoop.fs.s3a.secret.key", "minioadmin") \
             .config("spark.hadoop.fs.s3a.path.style.access", "true") \
@@ -56,6 +62,7 @@ def create_spark_session() -> SparkSession:
 
     return spark
 
+# connect to kafka to get messages
 def connect_to_kafka(spark_conn: SparkSession) -> Optional[DataFrame]:
     spark_df = None
     try:
@@ -77,9 +84,10 @@ def connect_to_kafka(spark_conn: SparkSession) -> Optional[DataFrame]:
         sys.exit(1)
     return spark_df # raw binary data from kafka
 
+# define schema of json data
 def get_event_schema() -> StructType:
     return StructType([
-        StructField("ts", TimestampType(), True),
+        StructField("ts", StringType(), True), # change to string to handle Datatime by DBT and avoid error when checking data with ClickHouse
         StructField("userId", StringType(), True),
         StructField("sessionId", IntegerType(), True),
         StructField("page", StringType(), True),
@@ -92,14 +100,15 @@ def get_event_schema() -> StructType:
         StructField("userAgent", StringType(), True),
         StructField("lastName", StringType(), True),
         StructField("firstName", StringType(), True),
-        StructField("registration", TimestampType(), True),
+        StructField("registration", StringType(), True), # change to string to handle Datatime by DBT
         StructField("gender", StringType(), True),
         StructField("artist", StringType(), True),
         StructField("song", StringType(), True),
         StructField("length", FloatType(), True),
     ])
 
-def get_json_data(raw_df: DataFrame, schema: StructType) -> Optional[DataFrame]: # convert raw binary data to json data
+# convert raw binary data to json data
+def get_json_data(raw_df: DataFrame, schema: StructType) -> Optional[DataFrame]: 
     try:
         json_df = raw_df.selectExpr("CAST(value AS STRING)") \
             .select(from_json(col("value"), schema).alias("data")) \
@@ -116,9 +125,31 @@ def get_json_data(raw_df: DataFrame, schema: StructType) -> Optional[DataFrame]:
         sys.exit(1)
     return json_df
 
+# display messages of a micro-batch to console
+def display_data(df: DataFrame):
+    try:
+        df.writeStream \
+            .format("console") \
+            .outputMode("append") \
+            .option("truncate", "false") \
+            .option("numRows", "500") \
+            .start()
+        # show full table and max 500 rows
+        logger.info("Data displayed successfully")
+        verbose_output(
+            f"{Background_colors.GREEN} Data displayed successfully"
+        )
+    except Exception as e:
+        verbose_output(
+            f"{Background_colors.RED} Couldn't display data: {e}"
+        )
+        logger.error(f"Couldn't display data: {e}")
+        sys.exit(1)
+
+# push data to minio
 def write_to_minio(df: DataFrame, bucket_name: str, checkpoint_path: str): # write data to minio
     try:
-        query = df.writeStream \
+        df.writeStream \
             .format("parquet") \
             .outputMode("append") \
             .option("checkpointLocation", checkpoint_path) \
@@ -135,12 +166,14 @@ def write_to_minio(df: DataFrame, bucket_name: str, checkpoint_path: str): # wri
         logger.error(f"Couldn't write data to MinIO: {e}")
         sys.exit(1)
 
+# connect to kafka -> convert to json -> display -> write to minio
 def main():
     spark = create_spark_session()
     raw_df = connect_to_kafka(spark)
     json_df = get_json_data(raw_df, get_event_schema())
-    write_to_minio(json_df, "music-events", "/tmp/checkpoints/music-events")
-    spark.streams.awaitAnyTermination()
+    display_data(json_df)
+    write_to_minio(json_df, MINIO_BUCKET, CHECKPOINT_PATH)
+    spark.streams.awaitAnyTermination() # keep spark running
 
 if __name__ == "__main__":
     main()

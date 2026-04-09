@@ -22,7 +22,7 @@ Step 2: Kafka
 - ternimal2: bin/kafka-server-start.sh config/server.properties
 - ternimal3: bin/kafka-topics.sh --create --topic music_events --bootstrap-server localhost:9092 --partitions 1 --replication-factor 1
 - because current scala version is not compatible with kafka, we need to use pipe 
-    stdbuf -oL bin/eventsim -c "examples/example-config.json" \ \
+    stdbuf -oL ./bin/eventsim -c "examples/example-config.json" \
     -n 2000 \
     --start-time "2026-04-06T00:00:00" \
     --end-time "2099-01-01T00:00:00" \
@@ -50,13 +50,65 @@ Step 4: MinIO
 - create data storage: mkdir -p ~MinIO/minio_data
 - export MINIO_ROOT_USER=minioadmin
 - export MINIO_ROOT_PASSWORD=minioadmin
-- run: ./minio server ~MinIO/minio_data --console-address ":9001"
-- turn on browser and go to http://localhost:9001
+- run: ./minio server ~/MinIO/minio_data --address ":9050" --console-address ":9051" . Use port 9050 and 9051 to avoid confict with ClickHouse
+- turn on browser and go to http://localhost:9051
 - login with username: minioadmin and password: minioadmin
 - create bucket: music_events
 
 Step 5: Run Spark Streaming
+- stand on project folder
 - run: spark-submit --packages org.apache.spark:spark-sql-kafka-0-10_2.12:3.5.8,org.apache.hadoop:hadoop-aws:3.3.4,com.amazonaws:aws-java-sdk-bundle:1.12.262  --conf "spark.driver.host=127.0.0.1" run_spark.py
 
+Step 6: ClickHouse
+- curl https://clickhouse.com/ | sh
+- sudo ./clickhouse install
+- ~/clickhouse/clickhouse server
+- turn on another terminal and run: clickhouse-client
+- create database: CREATE DATABASE music_analytics;
+- USE music_analytics;
+- Xoá bảng nếu tồn tại: DROP TABLE IF EXISTS events;
+CREATE TABLE events
+(
+    -- Dùng kiểu thô nhất có thể để không bị check "Range"
+    ts String,               
+    userId String,
+    sessionId UInt32,
+    page String,
+    auth String,
+    method String,
+    status UInt16,
+    level String,
+    itemInSession UInt32,
+    location String,
+    userAgent String,
+    lastName String,
+    firstName String,
+    registration String,     
+    gender String,
+    artist String,
+    song String,
+    length Float32
+)
+ENGINE = S3('http://127.0.0.1:9050/music-events/data/*.parquet', 'minioadmin', 'minioadmin', 'Parquet');
+- check: SELECT * FROM s3('http://127.0.0.1:9050/music-events/*.parquet', 'minioadmin', 'minioadmin', 'Parquet') 
+- check number of columns: SELECT count() FROM events;
+- SELECT 
+    ts, 
+    artist, 
+    song, 
+    firstName 
+FROM events 
+LIMIT 5;
+- Problem: Spark write column ts as type INT96, but ClickHouse expect DateTime
+- Solution: Convert ts to string in Spark and handle Datatime by DBT
 
+Step 7: DBT
 
+Check error:
+- check kafka and zookeeper : jps
+- check eventsim: ./bin/eventsim -c "examples/example-config.json" -n 100 --from 1 --to 0
+- check spark: spark-submit --version
+- check producer: echo "test message" | /home/duc1808/kafka/kafka_2.13-3.6.1/bin/kafka-console-producer.sh --bootstrap-server localhost:9092 --topic music_events
+- check continous eventsim: ./bin/eventsim -c "examples/example-config.json" --continuous --from 1 | /home/duc1808/kafka/kafka_2.13-3.6.1/bin/kafka-console-producer.sh --bootstrap-server localhost:9092 --topic music_events
+- check RAM: free -h
+- check CPU: nproc

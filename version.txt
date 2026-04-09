@@ -1,0 +1,7 @@
+java 8
+python 3.10
+spark 3.5.8
+kafka 3.7.0
+minio 8.0.2
+clickhouse 26.4.1.195
+

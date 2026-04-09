@@ -1,0 +1,11 @@
+# --- Spark & ETL ---
+pyspark==3.5.0
+delta-spark==3.1.0
+
+# --- dbt & ClickHouse ---
+dbt-core
+dbt-clickhouse
+
+# --- Tiện ích bổ sung (nếu cần) ---
+pandas
+python-dotenv
