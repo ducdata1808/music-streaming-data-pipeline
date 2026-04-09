@@ -1,11 +1,17 @@
 # --- Spark & ETL ---
 pyspark==3.5.0
-delta-spark==3.1.0
+delta-spark==3.1.0 # Used for delta lake format
 
-# --- dbt & ClickHouse ---
-dbt-core
-dbt-clickhouse
+dbt-core # dbt core
+dbt-clickhouse # clickhouse adapter for dbt
 
-# --- Tiện ích bổ sung (nếu cần) ---
 pandas
-python-dotenv
+python-dotenv # Used for environment variables
+
+apache-airflow==2.10.4 \
+    --constraint https://raw.githubusercontent.com/apache/airflow/constraints-2.10.4/constraints-3.12.txt
+apache-airflow-providers-apache-spark # SparkSubmitOperator
+apache-airflow-providers-http # HttpOperator
+apache-airflow-providers-amazon # Used for S3KeySensor to check MinIO
+airflow-clickhouse-plugin # clickhouse operator
+astronomer-cosmos # dbt operator
