@@ -61,6 +61,7 @@ Step 5: Run Spark Streaming
     export PYSPARK_PYTHON=$(which python3)
     export PYSPARK_DRIVER_PYTHON=$(which python3)
 - run: spark-submit --packages org.apache.spark:spark-sql-kafka-0-10_2.12:3.5.8,org.apache.hadoop:hadoop-aws:3.3.4,com.amazonaws:aws-java-sdk-bundle:1.12.262  --conf "spark.driver.host=127.0.0.1" run_spark.py
+- check: curl http://localhost:9050/minio/health/live
 
 Step 6: ClickHouse
 - curl https://clickhouse.com/ | sh
@@ -72,7 +73,6 @@ Step 6: ClickHouse
 - Xoá bảng nếu tồn tại: DROP TABLE IF EXISTS events;
 CREATE TABLE events
 (
-    -- Dùng kiểu thô nhất có thể để không bị check "Range"
     ts String,               
     userId String,
     sessionId UInt32,
@@ -136,6 +136,42 @@ Step 7: DBT
     SHOW TABLES IN music_analytics;
     SELECT * FROM stg_events LIMIT 5;
 
+Step 8: Airflow
+- download: pip install requirements.txt\
+- copy DAG file to airflow DAGs folder: cp ~/eventsim_project/dag.py ~/airflow/dags/music_pipeline.py
+- start airflow: airflow standalone
+- create connnection:
+        # MinIO connection
+    airflow connections add 'minio_default' \
+        --conn-type 'aws' \
+        --conn-extra '{"endpoint_url": "http://localhost:9050", "aws_access_key_id": "minioadmin", "aws_secret_access_key": "minioadmin"}'
+    # ClickHouse connection
+    airflow connections add 'clickhouse_default' \
+        --conn-type 'generic' \
+        --conn-host 'localhost' \
+        --conn-port 8123 \
+        --conn-login 'default' \
+        --conn-password '' \
+        --conn-schema 'music_analytics'
+    # Spark connection
+    airflow connections add 'spark_default' \
+        --conn-type 'spark' \
+        --conn-host 'local' \
+        --conn-extra '{"master": "local[*]"}'
+- check connection: 
+    airflow connections list | grep -E 'minio|clickhouse|spark'
+- check services: jps
+- check Airflow has received dag: 
+    airflow dags list | grep music_pipeline
+- check error: airflow dags list-import-errors
+- trigger dag: airflow dags trigger music_events_pipeline
+- view recent tasks: airflow dags list-runs -d music_events_pipeline
+- check each task: airflow tasks states-for-dag-run music_events_pipeline <run_id>
+
+
+Step 9: Streamlit
+- download: pip install streamlit
+- 
 
 Check error:
 - check kafka and zookeeper : jps
@@ -145,3 +181,6 @@ Check error:
 - check continous eventsim: ./bin/eventsim -c "examples/example-config.json" --continuous --from 1 | /home/duc1808/kafka/kafka_2.13-3.6.1/bin/kafka-console-producer.sh --bootstrap-server localhost:9092 --topic music_events
 - check RAM: free -h
 - check CPU: nproc
+
+next adjustment:
+- use dbt to clean error data from clickhouse (ex: one of file in MinIO has wrong structure or type)

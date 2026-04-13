@@ -15,3 +15,10 @@ apache-airflow-providers-http # HttpOperator
 apache-airflow-providers-amazon # Used for S3KeySensor to check MinIO
 airflow-clickhouse-plugin # clickhouse operator
 astronomer-cosmos # dbt operator
+
+
+streamlit
+pandas
+matplotlib
+seaborn
+clickhouse-connect

@@ -1,0 +1,2 @@
+2026-04-13 10:36:50,353 - app - ERROR - Error: Data does not have a column named `"hour"`. Available columns are `hour_timestamp, total_listens, unique_listeners`
+2026-04-13 10:36:55,735 - app - ERROR - Error: Data does not have a column named `"play_count"`. Available columns are `location, total_plays, unique_users, city`
