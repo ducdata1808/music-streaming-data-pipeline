@@ -20,7 +20,7 @@ class Background_colors:
 VERBOSE = True # show log message
 LOG_FILE = "run_spark.log" # log file name
 MINIO_BUCKET = "music-events" # minio bucket name
-CHECKPOINT_PATH = "/tmp/checkpoints/music-events" # checkpoint path
+CHECKPOINT_PATH = "/home/duc1808/eventsim_project/checkpoints/music-events" # persistent checkpoint path
 
 # setup log file
 logging.basicConfig(level=logging.INFO,
