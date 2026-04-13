@@ -39,12 +39,13 @@ def create_spark_session() -> SparkSession:
     try:
         spark = SparkSession.builder \
             .appName("SparkStreamingToMinIO") \
-            .config("spark.jars.packages", "org.apache.hadoop:hadoop-aws:3.3.4,org.apache.spark:spark-sql-kafka-0-10_2.12:3.5.8") \
+            .config("spark.jars.packages", "org.apache.hadoop:hadoop-aws:3.3.4,com.amazonaws:aws-java-sdk-bundle:1.12.262,org.apache.spark:spark-sql-kafka-0-10_2.12:3.5.8") \
             .config("spark.hadoop.fs.s3a.endpoint", "http://127.0.0.1:9050") \
             .config("spark.hadoop.fs.s3a.access.key", "minioadmin") \
             .config("spark.hadoop.fs.s3a.secret.key", "minioadmin") \
             .config("spark.hadoop.fs.s3a.path.style.access", "true") \
             .config("spark.hadoop.fs.s3a.impl", "org.apache.hadoop.fs.s3a.S3AFileSystem") \
+            .config("spark.hadoop.fs.s3a.aws.credentials.provider", "org.apache.hadoop.fs.s3a.SimpleAWSCredentialsProvider") \
             .config("spark.hadoop.fs.s3a.connection.ssl.enabled", "false") \
             .getOrCreate()
         
@@ -71,6 +72,7 @@ def connect_to_kafka(spark_conn: SparkSession) -> Optional[DataFrame]:
             .option("kafka.bootstrap.servers", "localhost:9092") \
             .option("subscribe", "music_events") \
             .option("startingOffsets", "earliest") \
+            .option("maxOffsetsPerTrigger", 5000) \
             .load()
         logger.info("Connected to Kafka successfully")
         verbose_output(
