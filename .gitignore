@@ -27,6 +27,8 @@ airflow-webserver.pid
 unittests.cfg
 webserver_config.py
 logs/
+standalone_admin_password.txt
+
 
 # DBT
 dbt/target/
@@ -57,3 +59,7 @@ clickhouse
 minio_data/
 clickhouse_data/
 eventsim/target/
+
+# my files
+note.txt
+future_update.txt

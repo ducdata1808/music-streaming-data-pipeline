@@ -12,6 +12,7 @@ This project simulates user listening behavior and pipes the data through an end
 6. **DBT (Data Build Tool):** Applies transformations (ELT) inside ClickHouse to build staging schemas and data marts.
 7. **Apache Airflow:** Orchestrates the manual Spark jobs, DBT models, and manages pipeline dependencies.
 
+![image not found](images/version1.png)
 ---
 
 ## 📁 Project Directory Structure
@@ -87,6 +88,8 @@ To spin up the entire pipeline, make sure you have granted execution p instances
    ```bash
    ~/eventsim_project/scripts/run_spark.sh
    ```
+   Turn on browser, go to http://localhost:9051/login, user: minioadmin, password: minioadmin
+   ![image not found](images/minio_web.png)
 7. **Start Analytics Database**:
    ```bash
    ~/eventsim_project/scripts/run_clickhouse.sh
@@ -104,3 +107,4 @@ To spin up the entire pipeline, make sure you have granted execution p instances
    ```bash
    ~/eventsim_project/scripts/run_app.sh
    ```
+   ![image not found](images/top_artists.png)
