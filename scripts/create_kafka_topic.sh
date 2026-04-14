@@ -1,6 +1,6 @@
 #!/bin/bash
 echo "=================================="
-echo "    Tạo Kafka Topic: music_events"
+echo "    Create Kafka Topic: music_events"
 echo "=================================="
 
 KAFKA_TOPICS="/home/duc1808/kafka/kafka_2.13-3.6.1/bin/kafka-topics.sh"

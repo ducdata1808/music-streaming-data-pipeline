@@ -6,12 +6,9 @@ echo "=================================="
 export MINIO_ROOT_USER=minioadmin
 export MINIO_ROOT_PASSWORD=minioadmin
 
-MINIO_DATA="/home/duc1808/MinIO/minio_data"
+MINIO_DATA="$HOME/MinIO/minio_data"
 
-MINIO_BIN="/home/duc1808/minio"
-if [ ! -f "$MINIO_BIN" ]; then
-    MINIO_BIN="/home/duc1808/eventsim_project/minio"
-fi
+MINIO_BIN="$HOME/minio"
 
 mkdir -p "$MINIO_DATA"
 

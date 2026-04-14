@@ -34,3 +34,7 @@ _Note: We use ports 9050 (API) and 9051 (Console) to avoid port-conflicts with C
 2. Login with `minioadmin` / `minioadmin`.
 3. Create a bucket named **`music_events`**.
 4. Data should start appearing here after initializing Spark.
+
+## 4. Notic
+1. Delete all data in the bucket before running the pipeline to avoid error caused by checkpoint mechanism of spark
+2. Delete ~/eventsim_project/checkpoint to avoid error caused by checkpoint of spark

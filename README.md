@@ -14,6 +14,28 @@ This project simulates user listening behavior and pipes the data through an end
 
 ---
 
+## 📁 Project Directory Structure
+
+```text
+~ (Home Directory)
+├── eventsim_project/        # Main project repository
+│   ├── airflow/             # Airflow DAGs and configurations
+│   ├── dbt/                 # DBT models and macros for transformations
+│   ├── kafka/               # Custom scripts for Kafka automation
+│   ├── scripts/             # Shell scripts to manage services (start, stop, etc.)
+│   ├── setup/               # Setup guides for each service (.md files)
+│   ├── spark_streaming/     # PySpark structured streaming scripts
+│   └── README.md            # Project documentation
+├── eventsim/                # EventSim (Data Generator) repository clone
+├── kafka_2.13-3.6.1/        # Kafka installation binaries & properties
+├── minio                    # MinIO server executable binary
+└── MinIO/
+    └── minio_data/          # MinIO Data Lake storage (Parquet files)
+```
+*Note: ClickHouse is installed system-wide (Global installation), which usually places executables in `/usr/bin/clickhouse` and data in `/var/lib/clickhouse/`.*
+
+---
+
 ## 🛠️ Detailed Setup Guides
 If you are deploying this for the first time, or need to rebuild a component, please refer to the detailed, step-by-step installation guides in the `setup/` directory:
 
@@ -27,44 +49,54 @@ If you are deploying this for the first time, or need to rebuild a component, pl
 ---
 
 ## 🚀 Quick Start
-To spin up the entire pipeline, make sure you have granted execution permissions to our helper scripts:
-```bash
-cd ~/eventsim_project/scripts
-chmod +x *.sh
-```
+To spin up the entire pipeline, make sure you have granted execution p instances in the following order:
 
-**Boot Order:** Open separate terminals or use background processes to start the instances in the following order:
+1. **Setup Virtual Environment** (If you haven't already):
+   ```bash
+   python3 -m venv ~/eventsim_project/venv
+   source ~/eventsim_project/venv/bin/activate
+   pip install -r ~/eventsim_project/requirements.txt
+   ```
 
-1. **Start Kafka & Zookeeper** (Depends on your local installation):
+2. **Start Kafka & Zookeeper** (Depends on your local installation):
    ```bash
-   cd ~/kafka
-   python3 run_kafka.py
+   python3 ~/eventsim_project/kafka/run_kafka.py
    ```
-2. **Create the Kafka Topic** (Only needed the first time):
+3. **Create the Kafka Topic** (Only needed the first time):
+   Grant execution permission to the script:
    ```bash
-   ./scripts/create_kafka_topic.sh
+   chmod +x ~/eventsim_project/scripts/*.sh
    ```
-3. **Start the Data Stream**:
+   Run the script:
    ```bash
-   ./scripts/run_eventsim.sh
+   ~/eventsim_project/scripts/create_kafka_topic.sh
    ```
-4. **Start the Data Lake**:
+4. **Start the Data Stream**:
    ```bash
-   ./scripts/run_minio.sh
+   ~/eventsim_project/scripts/run_eventsim.sh
    ```
-5. **Start Spark Processor**:
+   Turn on Kafka consumer to check the data stream:
    ```bash
-   ./scripts/run_spark.sh
+   ~/eventsim_project/scripts/run_kafka_consumer.sh
    ```
-6. **Start Analytics Database**:
+5. **Start the Data Lake**:
    ```bash
-   ./scripts/run_clickhouse.sh
+   ~/eventsim_project/scripts/run_minio.sh
+   ```
+6. **Start Spark Processor**:
+   ```bash
+   ~/eventsim_project/scripts/run_spark.sh
+   ```
+7. **Start Analytics Database**:
+   ```bash
+   ~/eventsim_project/scripts/run_clickhouse.sh
    # And to interact with it:
-   ./scripts/clickhouse_client.sh
+   ~/eventsim_project/scripts/clickhouse_client.sh
    ```
-7. **Orchestrate Transformations**:
+8. **Orchestrate Transformations**:
    ```bash
-   ./scripts/run_airflow.sh
+   source ~/eventsim_project/scripts/activate_venv.sh
+   ~/eventsim_project/scripts/run_airflow.sh
    # And to run the pipeline visually/manually:
-   ./scripts/trigger_airflow.sh
+   ~/eventsim_project/scripts/trigger_airflow.sh
    ```

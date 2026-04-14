@@ -53,3 +53,8 @@ cd ~/eventsim_project/scripts
 ./run_eventsim.sh
 ```
 This script will continually generate records simulating events from 2026 to 2099 and pipe them to the Kafka `music_events` topic.
+
+## 4. Increase generating speed
+Change n in run_eventsim.sh to a larger number
+Change start_time in run_eventsim.sh to recent date to reduce generating time
+Use multiple terminal to run multiple instances of run_eventsim.sh (use the same topic name)
