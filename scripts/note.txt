@@ -1,0 +1,4 @@
+grant permissions to all files in the project
+
+cd ~/eventsim_project/scripts
+chmod +x *.sh
