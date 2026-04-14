@@ -63,3 +63,4 @@ eventsim/target/
 # my files
 note.txt
 future_update.txt
+*.log
