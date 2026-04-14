@@ -3,6 +3,9 @@ echo "=================================="
 echo "  Trigger Airflow DAG manually"
 echo "=================================="
 
+export AIRFLOW_HOME="$HOME/eventsim_project"
+export AIRFLOW__CORE__DAGS_FOLDER="$HOME/eventsim_project/airflow"
+
 DAG_ID="music_events_pipeline"
 
 echo "Triggering $DAG_ID..."

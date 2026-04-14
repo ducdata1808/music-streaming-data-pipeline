@@ -100,3 +100,7 @@ To spin up the entire pipeline, make sure you have granted execution p instances
    # And to run the pipeline visually/manually:
    ~/eventsim_project/scripts/trigger_airflow.sh
    ```
+9. **Run app to check the result**:
+   ```bash
+   ~/eventsim_project/scripts/run_app.sh
+   ```
