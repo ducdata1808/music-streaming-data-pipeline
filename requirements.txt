@@ -2,14 +2,13 @@
 pyspark==3.5.0
 delta-spark==3.1.0 # Used for delta lake format
 
-dbt-core # dbt core
-dbt-clickhouse # clickhouse adapter for dbt
+dbt-core==1.8.0 # dbt core
+dbt-clickhouse==1.8.0 # clickhouse adapter for dbt
 
-pandas
-python-dotenv # Used for environment variables
+pandas==2.2.2
+python-dotenv==1.0.1 # Used for environment variables
 
-apache-airflow==2.10.4 \
-    --constraint https://raw.githubusercontent.com/apache/airflow/constraints-2.10.4/constraints-3.12.txt
+apache-airflow==2.10.4 --constraint https://raw.githubusercontent.com/apache/airflow/constraints-2.10.4/constraints-3.12.txt
 apache-airflow-providers-apache-spark # SparkSubmitOperator
 apache-airflow-providers-http # HttpOperator
 apache-airflow-providers-amazon # Used for S3KeySensor to check MinIO
@@ -18,7 +17,16 @@ astronomer-cosmos # dbt operator
 
 
 streamlit
-pandas
 matplotlib
 seaborn
 clickhouse-connect
+
+# system level
+
+# java==8
+# python==3.10
+# spark==3.5.8
+# kafka==3.7.0
+# minio==8.0.2
+# clickhouse==26.4.1.195
+# aws-java-sdk-bundle==1.12.262

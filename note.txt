@@ -60,6 +60,7 @@ Step 5: Run Spark Streaming
 - ask spark to use python in venv: 
     export PYSPARK_PYTHON=$(which python3)
     export PYSPARK_DRIVER_PYTHON=$(which python3)
+- delete checkpoint folder: rm -r checkpoint
 - run: spark-submit --packages org.apache.spark:spark-sql-kafka-0-10_2.12:3.5.8,org.apache.hadoop:hadoop-aws:3.3.4,com.amazonaws:aws-java-sdk-bundle:1.12.262  --conf "spark.driver.host=127.0.0.1" run_spark.py
 - check: curl http://localhost:9050/minio/health/live
 
@@ -138,7 +139,7 @@ Step 7: DBT
 
 Step 8: Airflow
 - download: pip install requirements.txt\
-- copy DAG file to airflow DAGs folder: cp ~/eventsim_project/dag.py ~/airflow/dags/music_pipeline.py
+- copy DAG file to airflow DAGs folder: cp ~/eventsim_project/airflow/dag.py ~/airflow/dags/music_pipeline.py
 - start airflow: airflow standalone
 - create connnection:
         # MinIO connection
@@ -168,11 +169,6 @@ Step 8: Airflow
 - view recent tasks: airflow dags list-runs -d music_events_pipeline
 - check each task: airflow tasks states-for-dag-run music_events_pipeline <run_id>
 
-
-Step 9: Streamlit
-- download: pip install streamlit
-- 
-
 Check error:
 - check kafka and zookeeper : jps
 - check eventsim: ./bin/eventsim -c "examples/example-config.json" -n 100 --from 1 --to 0
@@ -182,5 +178,7 @@ Check error:
 - check RAM: free -h
 - check CPU: nproc
 
-next adjustment:
-- use dbt to clean error data from clickhouse (ex: one of file in MinIO has wrong structure or type)
+current problem:
+- Lack of data synchronization between different engines.
+- ClickHouse query will be failed if there is any strange structured file appear in MinIO bucket
+- eventsim generates data very slow

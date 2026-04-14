@@ -1,0 +1,1248 @@
+2026-04-09 11:30:30,712 - spark_streaming - INFO - Spark session created successfully for MinIO
+2026-04-09 11:30:32,269 - spark_streaming - INFO - Connected to Kafka successfully
+2026-04-09 11:30:32,635 - spark_streaming - INFO - JSON data extracted successfully
+2026-04-09 11:30:32,943 - spark_streaming - INFO - Data displayed successfully
+2026-04-09 11:30:34,349 - spark_streaming - INFO - Data written to MinIO successfully
+2026-04-09 19:02:15,752 - py4j.clientserver - INFO - Error while receiving.
+Traceback (most recent call last):
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/clientserver.py", line 511, in send_command
+    answer = smart_decode(self.stream.readline()[:-1])
+                          ^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: reentrant call inside <_io.BufferedReader name=4>
+2026-04-09 19:02:15,776 - py4j.clientserver - INFO - Closing down clientserver connection
+2026-04-09 19:02:15,777 - root - ERROR - Exception while sending command.
+Traceback (most recent call last):
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/clientserver.py", line 511, in send_command
+    answer = smart_decode(self.stream.readline()[:-1])
+                          ^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: reentrant call inside <_io.BufferedReader name=4>
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/java_gateway.py", line 1038, in send_command
+    response = connection.send_command(command)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/clientserver.py", line 539, in send_command
+    raise Py4JNetworkError(
+py4j.protocol.Py4JNetworkError: Error while sending or receiving
+2026-04-09 19:02:15,784 - py4j.clientserver - INFO - Error while receiving.
+Traceback (most recent call last):
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/clientserver.py", line 511, in send_command
+    answer = smart_decode(self.stream.readline()[:-1])
+                          ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/socket.py", line 707, in readinto
+    return self._sock.recv_into(b)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/pyspark.zip/pyspark/context.py", line 381, in signal_handler
+    self.cancelAllJobs()
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/pyspark.zip/pyspark/context.py", line 2446, in cancelAllJobs
+    self._jsc.sc().cancelAllJobs()
+    ^^^^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/java_gateway.py", line 1322, in __call__
+    return_value = get_return_value(
+                   ^^^^^^^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/pyspark.zip/pyspark/errors/exceptions/captured.py", line 179, in deco
+    return f(*a, **kw)
+           ^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/protocol.py", line 334, in get_return_value
+    raise Py4JError(
+py4j.protocol.Py4JError: An error occurred while calling o30.sc
+2026-04-09 19:02:15,788 - py4j.clientserver - INFO - Closing down clientserver connection
+2026-04-09 19:02:15,788 - root - ERROR - Exception while sending command.
+Traceback (most recent call last):
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/clientserver.py", line 511, in send_command
+    answer = smart_decode(self.stream.readline()[:-1])
+                          ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/socket.py", line 707, in readinto
+    return self._sock.recv_into(b)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/pyspark.zip/pyspark/context.py", line 381, in signal_handler
+    self.cancelAllJobs()
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/pyspark.zip/pyspark/context.py", line 2446, in cancelAllJobs
+    self._jsc.sc().cancelAllJobs()
+    ^^^^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/java_gateway.py", line 1322, in __call__
+    return_value = get_return_value(
+                   ^^^^^^^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/pyspark.zip/pyspark/errors/exceptions/captured.py", line 179, in deco
+    return f(*a, **kw)
+           ^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/protocol.py", line 334, in get_return_value
+    raise Py4JError(
+py4j.protocol.Py4JError: An error occurred while calling o30.sc
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/java_gateway.py", line 1038, in send_command
+    response = connection.send_command(command)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/clientserver.py", line 539, in send_command
+    raise Py4JNetworkError(
+py4j.protocol.Py4JNetworkError: Error while sending or receiving
+2026-04-09 19:02:15,789 - py4j.clientserver - INFO - Closing down clientserver connection
+2026-04-09 23:05:10,434 - spark_streaming - INFO - Spark session created successfully for MinIO
+2026-04-09 23:05:11,971 - spark_streaming - ERROR - Couldn't connect to Kafka: Failed to find data source: kafka. Please deploy the application as per the deployment section of Structured Streaming + Kafka Integration Guide.
+2026-04-09 23:05:11,971 - py4j.clientserver - INFO - Closing down clientserver connection
+2026-04-09 23:05:18,693 - spark_streaming - INFO - Spark session created successfully for MinIO
+2026-04-09 23:05:20,070 - spark_streaming - ERROR - Couldn't connect to Kafka: Failed to find data source: kafka. Please deploy the application as per the deployment section of Structured Streaming + Kafka Integration Guide.
+2026-04-09 23:05:20,070 - py4j.clientserver - INFO - Closing down clientserver connection
+2026-04-09 23:05:27,443 - spark_streaming - INFO - Spark session created successfully for MinIO
+2026-04-09 23:05:28,761 - spark_streaming - ERROR - Couldn't connect to Kafka: Failed to find data source: kafka. Please deploy the application as per the deployment section of Structured Streaming + Kafka Integration Guide.
+2026-04-09 23:05:28,761 - py4j.clientserver - INFO - Closing down clientserver connection
+2026-04-09 23:10:17,605 - spark_streaming - INFO - Spark session created successfully for MinIO
+2026-04-09 23:10:18,804 - spark_streaming - ERROR - Couldn't connect to Kafka: Failed to find data source: kafka. Please deploy the application as per the deployment section of Structured Streaming + Kafka Integration Guide.
+2026-04-09 23:10:18,804 - py4j.clientserver - INFO - Closing down clientserver connection
+2026-04-09 23:10:26,975 - spark_streaming - INFO - Spark session created successfully for MinIO
+2026-04-09 23:10:28,174 - spark_streaming - ERROR - Couldn't connect to Kafka: Failed to find data source: kafka. Please deploy the application as per the deployment section of Structured Streaming + Kafka Integration Guide.
+2026-04-09 23:10:28,174 - py4j.clientserver - INFO - Closing down clientserver connection
+2026-04-09 23:10:35,835 - spark_streaming - INFO - Spark session created successfully for MinIO
+2026-04-09 23:10:37,117 - spark_streaming - ERROR - Couldn't connect to Kafka: Failed to find data source: kafka. Please deploy the application as per the deployment section of Structured Streaming + Kafka Integration Guide.
+2026-04-09 23:10:37,117 - py4j.clientserver - INFO - Closing down clientserver connection
+2026-04-09 23:21:23,297 - spark_streaming - INFO - Spark session created successfully for MinIO
+2026-04-09 23:21:24,907 - spark_streaming - INFO - Connected to Kafka successfully
+2026-04-09 23:21:25,237 - spark_streaming - INFO - JSON data extracted successfully
+2026-04-09 23:21:25,561 - spark_streaming - INFO - Data displayed successfully
+2026-04-09 23:21:26,903 - spark_streaming - INFO - Data written to MinIO successfully
+2026-04-09 23:24:02,811 - spark_streaming - INFO - Spark session created successfully for MinIO
+2026-04-09 23:24:04,309 - spark_streaming - ERROR - Couldn't connect to Kafka: Failed to find data source: kafka. Please deploy the application as per the deployment section of Structured Streaming + Kafka Integration Guide.
+2026-04-09 23:24:04,309 - py4j.clientserver - INFO - Closing down clientserver connection
+2026-04-09 23:29:10,880 - spark_streaming - INFO - Spark session created successfully for MinIO
+2026-04-09 23:29:12,233 - spark_streaming - ERROR - Couldn't connect to Kafka: Failed to find data source: kafka. Please deploy the application as per the deployment section of Structured Streaming + Kafka Integration Guide.
+2026-04-09 23:29:12,233 - py4j.clientserver - INFO - Closing down clientserver connection
+2026-04-09 23:30:37,215 - py4j.clientserver - INFO - Error while receiving.
+Traceback (most recent call last):
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/clientserver.py", line 511, in send_command
+    answer = smart_decode(self.stream.readline()[:-1])
+                          ^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: reentrant call inside <_io.BufferedReader name=4>
+2026-04-09 23:30:37,216 - py4j.clientserver - INFO - Closing down clientserver connection
+2026-04-09 23:30:37,216 - root - ERROR - Exception while sending command.
+Traceback (most recent call last):
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/clientserver.py", line 511, in send_command
+    answer = smart_decode(self.stream.readline()[:-1])
+                          ^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: reentrant call inside <_io.BufferedReader name=4>
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/java_gateway.py", line 1038, in send_command
+    response = connection.send_command(command)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/clientserver.py", line 539, in send_command
+    raise Py4JNetworkError(
+py4j.protocol.Py4JNetworkError: Error while sending or receiving
+2026-04-09 23:30:37,218 - py4j.clientserver - INFO - Error while receiving.
+Traceback (most recent call last):
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/clientserver.py", line 511, in send_command
+    answer = smart_decode(self.stream.readline()[:-1])
+                          ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/socket.py", line 707, in readinto
+    return self._sock.recv_into(b)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/pyspark.zip/pyspark/context.py", line 381, in signal_handler
+    self.cancelAllJobs()
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/pyspark.zip/pyspark/context.py", line 2446, in cancelAllJobs
+    self._jsc.sc().cancelAllJobs()
+    ^^^^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/java_gateway.py", line 1322, in __call__
+    return_value = get_return_value(
+                   ^^^^^^^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/pyspark.zip/pyspark/errors/exceptions/captured.py", line 179, in deco
+    return f(*a, **kw)
+           ^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/protocol.py", line 334, in get_return_value
+    raise Py4JError(
+py4j.protocol.Py4JError: An error occurred while calling o30.sc
+2026-04-09 23:30:37,220 - py4j.clientserver - INFO - Closing down clientserver connection
+2026-04-09 23:30:37,220 - root - ERROR - Exception while sending command.
+Traceback (most recent call last):
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/clientserver.py", line 511, in send_command
+    answer = smart_decode(self.stream.readline()[:-1])
+                          ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/socket.py", line 707, in readinto
+    return self._sock.recv_into(b)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/pyspark.zip/pyspark/context.py", line 381, in signal_handler
+    self.cancelAllJobs()
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/pyspark.zip/pyspark/context.py", line 2446, in cancelAllJobs
+    self._jsc.sc().cancelAllJobs()
+    ^^^^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/java_gateway.py", line 1322, in __call__
+    return_value = get_return_value(
+                   ^^^^^^^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/pyspark.zip/pyspark/errors/exceptions/captured.py", line 179, in deco
+    return f(*a, **kw)
+           ^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/protocol.py", line 334, in get_return_value
+    raise Py4JError(
+py4j.protocol.Py4JError: An error occurred while calling o30.sc
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/java_gateway.py", line 1038, in send_command
+    response = connection.send_command(command)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/clientserver.py", line 539, in send_command
+    raise Py4JNetworkError(
+py4j.protocol.Py4JNetworkError: Error while sending or receiving
+2026-04-09 23:30:37,221 - py4j.clientserver - INFO - Closing down clientserver connection
+2026-04-09 23:30:37,222 - py4j.clientserver - INFO - Closing down clientserver connection
+2026-04-10 20:38:44,337 - spark_streaming - INFO - Spark session created successfully for MinIO
+2026-04-10 20:38:46,118 - spark_streaming - INFO - Connected to Kafka successfully
+2026-04-10 20:38:46,493 - spark_streaming - INFO - JSON data extracted successfully
+2026-04-10 20:38:46,867 - spark_streaming - INFO - Data displayed successfully
+2026-04-10 20:38:48,538 - spark_streaming - INFO - Data written to MinIO successfully
+2026-04-10 23:51:13,613 - py4j.clientserver - INFO - Error while receiving.
+Traceback (most recent call last):
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/clientserver.py", line 511, in send_command
+    answer = smart_decode(self.stream.readline()[:-1])
+                          ^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: reentrant call inside <_io.BufferedReader name=4>
+2026-04-10 23:51:13,623 - py4j.clientserver - INFO - Closing down clientserver connection
+2026-04-10 23:51:13,624 - root - ERROR - Exception while sending command.
+Traceback (most recent call last):
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/clientserver.py", line 511, in send_command
+    answer = smart_decode(self.stream.readline()[:-1])
+                          ^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: reentrant call inside <_io.BufferedReader name=4>
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/java_gateway.py", line 1038, in send_command
+    response = connection.send_command(command)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/clientserver.py", line 539, in send_command
+    raise Py4JNetworkError(
+py4j.protocol.Py4JNetworkError: Error while sending or receiving
+2026-04-10 23:51:13,630 - py4j.clientserver - INFO - Error while receiving.
+Traceback (most recent call last):
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/clientserver.py", line 511, in send_command
+    answer = smart_decode(self.stream.readline()[:-1])
+                          ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/socket.py", line 707, in readinto
+    return self._sock.recv_into(b)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/pyspark.zip/pyspark/context.py", line 381, in signal_handler
+    self.cancelAllJobs()
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/pyspark.zip/pyspark/context.py", line 2446, in cancelAllJobs
+    self._jsc.sc().cancelAllJobs()
+    ^^^^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/java_gateway.py", line 1322, in __call__
+    return_value = get_return_value(
+                   ^^^^^^^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/pyspark.zip/pyspark/errors/exceptions/captured.py", line 179, in deco
+    return f(*a, **kw)
+           ^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/protocol.py", line 334, in get_return_value
+    raise Py4JError(
+py4j.protocol.Py4JError: An error occurred while calling o30.sc
+2026-04-10 23:51:13,636 - py4j.clientserver - INFO - Closing down clientserver connection
+2026-04-10 23:51:13,637 - root - ERROR - Exception while sending command.
+Traceback (most recent call last):
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/clientserver.py", line 511, in send_command
+    answer = smart_decode(self.stream.readline()[:-1])
+                          ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/socket.py", line 707, in readinto
+    return self._sock.recv_into(b)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/pyspark.zip/pyspark/context.py", line 381, in signal_handler
+    self.cancelAllJobs()
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/pyspark.zip/pyspark/context.py", line 2446, in cancelAllJobs
+    self._jsc.sc().cancelAllJobs()
+    ^^^^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/java_gateway.py", line 1322, in __call__
+    return_value = get_return_value(
+                   ^^^^^^^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/pyspark.zip/pyspark/errors/exceptions/captured.py", line 179, in deco
+    return f(*a, **kw)
+           ^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/protocol.py", line 334, in get_return_value
+    raise Py4JError(
+py4j.protocol.Py4JError: An error occurred while calling o30.sc
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/java_gateway.py", line 1038, in send_command
+    response = connection.send_command(command)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/clientserver.py", line 539, in send_command
+    raise Py4JNetworkError(
+py4j.protocol.Py4JNetworkError: Error while sending or receiving
+2026-04-10 23:51:13,637 - py4j.clientserver - INFO - Closing down clientserver connection
+2026-04-10 23:51:13,644 - py4j.clientserver - INFO - Closing down clientserver connection
+2026-04-10 23:51:24,861 - spark_streaming - INFO - Spark session created successfully for MinIO
+2026-04-10 23:51:30,112 - spark_streaming - INFO - Connected to Kafka successfully
+2026-04-10 23:51:30,518 - spark_streaming - INFO - JSON data extracted successfully
+2026-04-10 23:51:30,883 - spark_streaming - INFO - Data displayed successfully
+2026-04-10 23:51:32,311 - spark_streaming - INFO - Data written to MinIO successfully
+2026-04-10 23:56:41,296 - py4j.clientserver - INFO - Error while receiving.
+Traceback (most recent call last):
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/clientserver.py", line 511, in send_command
+    answer = smart_decode(self.stream.readline()[:-1])
+                          ^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: reentrant call inside <_io.BufferedReader name=4>
+2026-04-10 23:56:41,297 - py4j.clientserver - INFO - Closing down clientserver connection
+2026-04-10 23:56:41,297 - root - ERROR - Exception while sending command.
+Traceback (most recent call last):
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/clientserver.py", line 511, in send_command
+    answer = smart_decode(self.stream.readline()[:-1])
+                          ^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: reentrant call inside <_io.BufferedReader name=4>
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/java_gateway.py", line 1038, in send_command
+    response = connection.send_command(command)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/clientserver.py", line 539, in send_command
+    raise Py4JNetworkError(
+py4j.protocol.Py4JNetworkError: Error while sending or receiving
+2026-04-10 23:56:41,298 - py4j.clientserver - INFO - Error while receiving.
+Traceback (most recent call last):
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/clientserver.py", line 511, in send_command
+    answer = smart_decode(self.stream.readline()[:-1])
+                          ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/socket.py", line 707, in readinto
+    return self._sock.recv_into(b)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/pyspark.zip/pyspark/context.py", line 381, in signal_handler
+    self.cancelAllJobs()
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/pyspark.zip/pyspark/context.py", line 2446, in cancelAllJobs
+    self._jsc.sc().cancelAllJobs()
+    ^^^^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/java_gateway.py", line 1322, in __call__
+    return_value = get_return_value(
+                   ^^^^^^^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/pyspark.zip/pyspark/errors/exceptions/captured.py", line 179, in deco
+    return f(*a, **kw)
+           ^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/protocol.py", line 334, in get_return_value
+    raise Py4JError(
+py4j.protocol.Py4JError: An error occurred while calling o30.sc
+2026-04-10 23:56:41,299 - py4j.clientserver - INFO - Closing down clientserver connection
+2026-04-10 23:56:41,299 - root - ERROR - Exception while sending command.
+Traceback (most recent call last):
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/clientserver.py", line 511, in send_command
+    answer = smart_decode(self.stream.readline()[:-1])
+                          ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/socket.py", line 707, in readinto
+    return self._sock.recv_into(b)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/pyspark.zip/pyspark/context.py", line 381, in signal_handler
+    self.cancelAllJobs()
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/pyspark.zip/pyspark/context.py", line 2446, in cancelAllJobs
+    self._jsc.sc().cancelAllJobs()
+    ^^^^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/java_gateway.py", line 1322, in __call__
+    return_value = get_return_value(
+                   ^^^^^^^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/pyspark.zip/pyspark/errors/exceptions/captured.py", line 179, in deco
+    return f(*a, **kw)
+           ^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/protocol.py", line 334, in get_return_value
+    raise Py4JError(
+py4j.protocol.Py4JError: An error occurred while calling o30.sc
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/java_gateway.py", line 1038, in send_command
+    response = connection.send_command(command)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/clientserver.py", line 539, in send_command
+    raise Py4JNetworkError(
+py4j.protocol.Py4JNetworkError: Error while sending or receiving
+2026-04-10 23:56:41,299 - py4j.clientserver - INFO - Closing down clientserver connection
+2026-04-10 23:56:41,301 - py4j.clientserver - INFO - Closing down clientserver connection
+2026-04-10 23:56:58,975 - spark_streaming - INFO - Spark session created successfully for MinIO
+2026-04-10 23:57:00,428 - spark_streaming - INFO - Connected to Kafka successfully
+2026-04-10 23:57:00,817 - spark_streaming - INFO - JSON data extracted successfully
+2026-04-10 23:57:01,084 - spark_streaming - INFO - Data displayed successfully
+2026-04-10 23:57:02,541 - spark_streaming - INFO - Data written to MinIO successfully
+2026-04-11 00:11:09,155 - py4j.clientserver - INFO - Error while receiving.
+Traceback (most recent call last):
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/clientserver.py", line 511, in send_command
+    answer = smart_decode(self.stream.readline()[:-1])
+                          ^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: reentrant call inside <_io.BufferedReader name=4>
+2026-04-11 00:11:09,156 - py4j.clientserver - INFO - Closing down clientserver connection
+2026-04-11 00:11:09,157 - root - ERROR - Exception while sending command.
+Traceback (most recent call last):
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/clientserver.py", line 511, in send_command
+    answer = smart_decode(self.stream.readline()[:-1])
+                          ^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: reentrant call inside <_io.BufferedReader name=4>
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/java_gateway.py", line 1038, in send_command
+    response = connection.send_command(command)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/clientserver.py", line 539, in send_command
+    raise Py4JNetworkError(
+py4j.protocol.Py4JNetworkError: Error while sending or receiving
+2026-04-11 00:11:09,158 - py4j.clientserver - INFO - Error while receiving.
+Traceback (most recent call last):
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/clientserver.py", line 511, in send_command
+    answer = smart_decode(self.stream.readline()[:-1])
+                          ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/socket.py", line 707, in readinto
+    return self._sock.recv_into(b)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/pyspark.zip/pyspark/context.py", line 381, in signal_handler
+    self.cancelAllJobs()
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/pyspark.zip/pyspark/context.py", line 2446, in cancelAllJobs
+    self._jsc.sc().cancelAllJobs()
+    ^^^^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/java_gateway.py", line 1322, in __call__
+    return_value = get_return_value(
+                   ^^^^^^^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/pyspark.zip/pyspark/errors/exceptions/captured.py", line 179, in deco
+    return f(*a, **kw)
+           ^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/protocol.py", line 334, in get_return_value
+    raise Py4JError(
+py4j.protocol.Py4JError: An error occurred while calling o30.sc
+2026-04-11 00:11:09,158 - py4j.clientserver - INFO - Closing down clientserver connection
+2026-04-11 00:11:09,159 - root - ERROR - Exception while sending command.
+Traceback (most recent call last):
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/clientserver.py", line 511, in send_command
+    answer = smart_decode(self.stream.readline()[:-1])
+                          ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/socket.py", line 707, in readinto
+    return self._sock.recv_into(b)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/pyspark.zip/pyspark/context.py", line 381, in signal_handler
+    self.cancelAllJobs()
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/pyspark.zip/pyspark/context.py", line 2446, in cancelAllJobs
+    self._jsc.sc().cancelAllJobs()
+    ^^^^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/java_gateway.py", line 1322, in __call__
+    return_value = get_return_value(
+                   ^^^^^^^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/pyspark.zip/pyspark/errors/exceptions/captured.py", line 179, in deco
+    return f(*a, **kw)
+           ^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/protocol.py", line 334, in get_return_value
+    raise Py4JError(
+py4j.protocol.Py4JError: An error occurred while calling o30.sc
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/java_gateway.py", line 1038, in send_command
+    response = connection.send_command(command)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/clientserver.py", line 539, in send_command
+    raise Py4JNetworkError(
+py4j.protocol.Py4JNetworkError: Error while sending or receiving
+2026-04-11 00:11:09,159 - py4j.clientserver - INFO - Closing down clientserver connection
+2026-04-11 00:11:09,160 - py4j.clientserver - INFO - Closing down clientserver connection
+2026-04-11 00:11:26,591 - spark_streaming - INFO - Spark session created successfully for MinIO
+2026-04-11 00:11:27,959 - spark_streaming - INFO - Connected to Kafka successfully
+2026-04-11 00:11:28,316 - spark_streaming - INFO - JSON data extracted successfully
+2026-04-11 00:11:28,577 - spark_streaming - INFO - Data displayed successfully
+2026-04-11 00:11:29,907 - spark_streaming - INFO - Data written to MinIO successfully
+2026-04-11 00:16:37,003 - py4j.clientserver - INFO - Error while receiving.
+Traceback (most recent call last):
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/clientserver.py", line 511, in send_command
+    answer = smart_decode(self.stream.readline()[:-1])
+                          ^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: reentrant call inside <_io.BufferedReader name=4>
+2026-04-11 00:16:37,005 - py4j.clientserver - INFO - Closing down clientserver connection
+2026-04-11 00:16:37,005 - root - ERROR - Exception while sending command.
+Traceback (most recent call last):
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/clientserver.py", line 511, in send_command
+    answer = smart_decode(self.stream.readline()[:-1])
+                          ^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: reentrant call inside <_io.BufferedReader name=4>
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/java_gateway.py", line 1038, in send_command
+    response = connection.send_command(command)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/clientserver.py", line 539, in send_command
+    raise Py4JNetworkError(
+py4j.protocol.Py4JNetworkError: Error while sending or receiving
+2026-04-11 00:16:37,006 - py4j.clientserver - INFO - Error while receiving.
+Traceback (most recent call last):
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/clientserver.py", line 511, in send_command
+    answer = smart_decode(self.stream.readline()[:-1])
+                          ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/socket.py", line 707, in readinto
+    return self._sock.recv_into(b)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/pyspark.zip/pyspark/context.py", line 381, in signal_handler
+    self.cancelAllJobs()
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/pyspark.zip/pyspark/context.py", line 2446, in cancelAllJobs
+    self._jsc.sc().cancelAllJobs()
+    ^^^^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/java_gateway.py", line 1322, in __call__
+    return_value = get_return_value(
+                   ^^^^^^^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/pyspark.zip/pyspark/errors/exceptions/captured.py", line 179, in deco
+    return f(*a, **kw)
+           ^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/protocol.py", line 334, in get_return_value
+    raise Py4JError(
+py4j.protocol.Py4JError: An error occurred while calling o30.sc
+2026-04-11 00:16:37,007 - py4j.clientserver - INFO - Closing down clientserver connection
+2026-04-11 00:16:37,007 - root - ERROR - Exception while sending command.
+Traceback (most recent call last):
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/clientserver.py", line 511, in send_command
+    answer = smart_decode(self.stream.readline()[:-1])
+                          ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/socket.py", line 707, in readinto
+    return self._sock.recv_into(b)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/pyspark.zip/pyspark/context.py", line 381, in signal_handler
+    self.cancelAllJobs()
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/pyspark.zip/pyspark/context.py", line 2446, in cancelAllJobs
+    self._jsc.sc().cancelAllJobs()
+    ^^^^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/java_gateway.py", line 1322, in __call__
+    return_value = get_return_value(
+                   ^^^^^^^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/pyspark.zip/pyspark/errors/exceptions/captured.py", line 179, in deco
+    return f(*a, **kw)
+           ^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/protocol.py", line 334, in get_return_value
+    raise Py4JError(
+py4j.protocol.Py4JError: An error occurred while calling o30.sc
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/java_gateway.py", line 1038, in send_command
+    response = connection.send_command(command)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/clientserver.py", line 539, in send_command
+    raise Py4JNetworkError(
+py4j.protocol.Py4JNetworkError: Error while sending or receiving
+2026-04-11 00:16:37,008 - py4j.clientserver - INFO - Closing down clientserver connection
+2026-04-11 00:16:37,009 - py4j.clientserver - INFO - Closing down clientserver connection
+2026-04-13 08:04:06,938 - spark_streaming - INFO - Spark session created successfully for MinIO
+2026-04-13 08:04:08,873 - spark_streaming - INFO - Connected to Kafka successfully
+2026-04-13 08:04:09,330 - spark_streaming - INFO - JSON data extracted successfully
+2026-04-13 08:04:09,685 - spark_streaming - INFO - Data displayed successfully
+2026-04-13 08:04:28,287 - py4j.clientserver - INFO - Error while receiving.
+Traceback (most recent call last):
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/clientserver.py", line 511, in send_command
+    answer = smart_decode(self.stream.readline()[:-1])
+                          ^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: reentrant call inside <_io.BufferedReader name=4>
+2026-04-13 08:04:28,288 - py4j.clientserver - INFO - Closing down clientserver connection
+2026-04-13 08:04:28,288 - root - ERROR - Exception while sending command.
+Traceback (most recent call last):
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/clientserver.py", line 511, in send_command
+    answer = smart_decode(self.stream.readline()[:-1])
+                          ^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: reentrant call inside <_io.BufferedReader name=4>
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/java_gateway.py", line 1038, in send_command
+    response = connection.send_command(command)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/clientserver.py", line 539, in send_command
+    raise Py4JNetworkError(
+py4j.protocol.Py4JNetworkError: Error while sending or receiving
+2026-04-13 08:04:28,289 - py4j.clientserver - INFO - Error while receiving.
+Traceback (most recent call last):
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/clientserver.py", line 511, in send_command
+    answer = smart_decode(self.stream.readline()[:-1])
+                          ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/socket.py", line 707, in readinto
+    return self._sock.recv_into(b)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/pyspark.zip/pyspark/context.py", line 381, in signal_handler
+    self.cancelAllJobs()
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/pyspark.zip/pyspark/context.py", line 2446, in cancelAllJobs
+    self._jsc.sc().cancelAllJobs()
+    ^^^^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/java_gateway.py", line 1322, in __call__
+    return_value = get_return_value(
+                   ^^^^^^^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/pyspark.zip/pyspark/errors/exceptions/captured.py", line 179, in deco
+    return f(*a, **kw)
+           ^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/protocol.py", line 334, in get_return_value
+    raise Py4JError(
+py4j.protocol.Py4JError: An error occurred while calling o30.sc
+2026-04-13 08:04:28,293 - py4j.clientserver - INFO - Closing down clientserver connection
+2026-04-13 08:04:28,293 - root - ERROR - Exception while sending command.
+Traceback (most recent call last):
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/clientserver.py", line 511, in send_command
+    answer = smart_decode(self.stream.readline()[:-1])
+                          ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/socket.py", line 707, in readinto
+    return self._sock.recv_into(b)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/pyspark.zip/pyspark/context.py", line 381, in signal_handler
+    self.cancelAllJobs()
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/pyspark.zip/pyspark/context.py", line 2446, in cancelAllJobs
+    self._jsc.sc().cancelAllJobs()
+    ^^^^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/java_gateway.py", line 1322, in __call__
+    return_value = get_return_value(
+                   ^^^^^^^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/pyspark.zip/pyspark/errors/exceptions/captured.py", line 179, in deco
+    return f(*a, **kw)
+           ^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/protocol.py", line 334, in get_return_value
+    raise Py4JError(
+py4j.protocol.Py4JError: An error occurred while calling o30.sc
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/java_gateway.py", line 1038, in send_command
+    response = connection.send_command(command)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/clientserver.py", line 539, in send_command
+    raise Py4JNetworkError(
+py4j.protocol.Py4JNetworkError: Error while sending or receiving
+2026-04-13 08:04:28,293 - py4j.clientserver - INFO - Closing down clientserver connection
+2026-04-13 08:04:28,294 - spark_streaming - ERROR - Couldn't write data to MinIO: An error occurred while calling o73.start
+2026-04-13 08:04:28,294 - py4j.clientserver - INFO - Closing down clientserver connection
+2026-04-13 08:08:05,877 - spark_streaming - INFO - Spark session created successfully for MinIO
+2026-04-13 08:08:07,477 - spark_streaming - INFO - Connected to Kafka successfully
+2026-04-13 08:08:07,836 - spark_streaming - INFO - JSON data extracted successfully
+2026-04-13 08:08:08,174 - spark_streaming - INFO - Data displayed successfully
+2026-04-13 08:08:09,518 - spark_streaming - INFO - Data written to MinIO successfully
+2026-04-13 08:18:51,959 - py4j.clientserver - INFO - Error while receiving.
+Traceback (most recent call last):
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/clientserver.py", line 511, in send_command
+    answer = smart_decode(self.stream.readline()[:-1])
+                          ^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: reentrant call inside <_io.BufferedReader name=4>
+2026-04-13 08:18:51,960 - py4j.clientserver - INFO - Closing down clientserver connection
+2026-04-13 08:18:51,960 - root - ERROR - Exception while sending command.
+Traceback (most recent call last):
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/clientserver.py", line 511, in send_command
+    answer = smart_decode(self.stream.readline()[:-1])
+                          ^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: reentrant call inside <_io.BufferedReader name=4>
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/java_gateway.py", line 1038, in send_command
+    response = connection.send_command(command)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/clientserver.py", line 539, in send_command
+    raise Py4JNetworkError(
+py4j.protocol.Py4JNetworkError: Error while sending or receiving
+2026-04-13 08:18:51,961 - py4j.clientserver - INFO - Error while receiving.
+Traceback (most recent call last):
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/clientserver.py", line 511, in send_command
+    answer = smart_decode(self.stream.readline()[:-1])
+                          ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/socket.py", line 707, in readinto
+    return self._sock.recv_into(b)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/pyspark.zip/pyspark/context.py", line 381, in signal_handler
+    self.cancelAllJobs()
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/pyspark.zip/pyspark/context.py", line 2446, in cancelAllJobs
+    self._jsc.sc().cancelAllJobs()
+    ^^^^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/java_gateway.py", line 1322, in __call__
+    return_value = get_return_value(
+                   ^^^^^^^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/pyspark.zip/pyspark/errors/exceptions/captured.py", line 179, in deco
+    return f(*a, **kw)
+           ^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/protocol.py", line 334, in get_return_value
+    raise Py4JError(
+py4j.protocol.Py4JError: An error occurred while calling o30.sc
+2026-04-13 08:18:51,962 - py4j.clientserver - INFO - Closing down clientserver connection
+2026-04-13 08:18:51,962 - root - ERROR - Exception while sending command.
+Traceback (most recent call last):
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/clientserver.py", line 511, in send_command
+    answer = smart_decode(self.stream.readline()[:-1])
+                          ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/socket.py", line 707, in readinto
+    return self._sock.recv_into(b)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/pyspark.zip/pyspark/context.py", line 381, in signal_handler
+    self.cancelAllJobs()
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/pyspark.zip/pyspark/context.py", line 2446, in cancelAllJobs
+    self._jsc.sc().cancelAllJobs()
+    ^^^^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/java_gateway.py", line 1322, in __call__
+    return_value = get_return_value(
+                   ^^^^^^^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/pyspark.zip/pyspark/errors/exceptions/captured.py", line 179, in deco
+    return f(*a, **kw)
+           ^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/protocol.py", line 334, in get_return_value
+    raise Py4JError(
+py4j.protocol.Py4JError: An error occurred while calling o30.sc
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/java_gateway.py", line 1038, in send_command
+    response = connection.send_command(command)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/clientserver.py", line 539, in send_command
+    raise Py4JNetworkError(
+py4j.protocol.Py4JNetworkError: Error while sending or receiving
+2026-04-13 08:18:51,963 - py4j.clientserver - INFO - Closing down clientserver connection
+2026-04-13 08:18:51,964 - py4j.clientserver - INFO - Closing down clientserver connection
+2026-04-13 08:19:22,331 - spark_streaming - INFO - Spark session created successfully for MinIO
+2026-04-13 08:19:23,889 - spark_streaming - INFO - Connected to Kafka successfully
+2026-04-13 08:19:24,246 - spark_streaming - INFO - JSON data extracted successfully
+2026-04-13 08:19:24,564 - spark_streaming - INFO - Data displayed successfully
+2026-04-13 08:19:26,073 - spark_streaming - INFO - Data written to MinIO successfully
+2026-04-13 08:33:25,592 - py4j.clientserver - INFO - Error while receiving.
+Traceback (most recent call last):
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/clientserver.py", line 511, in send_command
+    answer = smart_decode(self.stream.readline()[:-1])
+                          ^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: reentrant call inside <_io.BufferedReader name=4>
+2026-04-13 08:33:25,593 - py4j.clientserver - INFO - Closing down clientserver connection
+2026-04-13 08:33:25,593 - root - ERROR - Exception while sending command.
+Traceback (most recent call last):
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/clientserver.py", line 511, in send_command
+    answer = smart_decode(self.stream.readline()[:-1])
+                          ^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: reentrant call inside <_io.BufferedReader name=4>
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/java_gateway.py", line 1038, in send_command
+    response = connection.send_command(command)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/clientserver.py", line 539, in send_command
+    raise Py4JNetworkError(
+py4j.protocol.Py4JNetworkError: Error while sending or receiving
+2026-04-13 08:33:25,594 - py4j.clientserver - INFO - Error while receiving.
+Traceback (most recent call last):
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/clientserver.py", line 511, in send_command
+    answer = smart_decode(self.stream.readline()[:-1])
+                          ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/socket.py", line 707, in readinto
+    return self._sock.recv_into(b)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/pyspark.zip/pyspark/context.py", line 381, in signal_handler
+    self.cancelAllJobs()
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/pyspark.zip/pyspark/context.py", line 2446, in cancelAllJobs
+    self._jsc.sc().cancelAllJobs()
+    ^^^^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/java_gateway.py", line 1322, in __call__
+    return_value = get_return_value(
+                   ^^^^^^^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/pyspark.zip/pyspark/errors/exceptions/captured.py", line 179, in deco
+    return f(*a, **kw)
+           ^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/protocol.py", line 334, in get_return_value
+    raise Py4JError(
+py4j.protocol.Py4JError: An error occurred while calling o30.sc
+2026-04-13 08:33:25,595 - py4j.clientserver - INFO - Closing down clientserver connection
+2026-04-13 08:33:25,595 - root - ERROR - Exception while sending command.
+Traceback (most recent call last):
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/clientserver.py", line 511, in send_command
+    answer = smart_decode(self.stream.readline()[:-1])
+                          ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/socket.py", line 707, in readinto
+    return self._sock.recv_into(b)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/pyspark.zip/pyspark/context.py", line 381, in signal_handler
+    self.cancelAllJobs()
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/pyspark.zip/pyspark/context.py", line 2446, in cancelAllJobs
+    self._jsc.sc().cancelAllJobs()
+    ^^^^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/java_gateway.py", line 1322, in __call__
+    return_value = get_return_value(
+                   ^^^^^^^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/pyspark.zip/pyspark/errors/exceptions/captured.py", line 179, in deco
+    return f(*a, **kw)
+           ^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/protocol.py", line 334, in get_return_value
+    raise Py4JError(
+py4j.protocol.Py4JError: An error occurred while calling o30.sc
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/java_gateway.py", line 1038, in send_command
+    response = connection.send_command(command)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/clientserver.py", line 539, in send_command
+    raise Py4JNetworkError(
+py4j.protocol.Py4JNetworkError: Error while sending or receiving
+2026-04-13 08:33:25,595 - py4j.clientserver - INFO - Closing down clientserver connection
+2026-04-13 08:33:25,596 - py4j.clientserver - INFO - Closing down clientserver connection
+2026-04-13 08:33:54,639 - spark_streaming - INFO - Spark session created successfully for MinIO
+2026-04-13 08:33:56,478 - spark_streaming - INFO - Connected to Kafka successfully
+2026-04-13 08:33:56,960 - spark_streaming - INFO - JSON data extracted successfully
+2026-04-13 08:33:57,271 - spark_streaming - INFO - Data displayed successfully
+2026-04-13 08:33:59,542 - spark_streaming - INFO - Data written to MinIO successfully
+2026-04-13 08:50:37,434 - py4j.clientserver - INFO - Closing down clientserver connection
+2026-04-13 08:52:04,334 - spark_streaming - INFO - Spark session created successfully for MinIO
+2026-04-13 08:52:09,505 - spark_streaming - INFO - Connected to Kafka successfully
+2026-04-13 08:52:09,889 - spark_streaming - INFO - JSON data extracted successfully
+2026-04-13 08:52:10,196 - spark_streaming - INFO - Data displayed successfully
+2026-04-13 08:52:12,079 - spark_streaming - INFO - Data written to MinIO successfully
+2026-04-13 11:38:14,525 - py4j.clientserver - INFO - Error while receiving.
+Traceback (most recent call last):
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/clientserver.py", line 511, in send_command
+    answer = smart_decode(self.stream.readline()[:-1])
+                          ^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: reentrant call inside <_io.BufferedReader name=4>
+2026-04-13 11:38:14,538 - py4j.clientserver - INFO - Closing down clientserver connection
+2026-04-13 11:38:14,539 - root - ERROR - Exception while sending command.
+Traceback (most recent call last):
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/clientserver.py", line 511, in send_command
+    answer = smart_decode(self.stream.readline()[:-1])
+                          ^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: reentrant call inside <_io.BufferedReader name=4>
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/java_gateway.py", line 1038, in send_command
+    response = connection.send_command(command)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/clientserver.py", line 539, in send_command
+    raise Py4JNetworkError(
+py4j.protocol.Py4JNetworkError: Error while sending or receiving
+2026-04-13 11:38:14,543 - py4j.clientserver - INFO - Error while receiving.
+Traceback (most recent call last):
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/clientserver.py", line 511, in send_command
+    answer = smart_decode(self.stream.readline()[:-1])
+                          ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/socket.py", line 707, in readinto
+    return self._sock.recv_into(b)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/pyspark.zip/pyspark/context.py", line 381, in signal_handler
+    self.cancelAllJobs()
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/pyspark.zip/pyspark/context.py", line 2446, in cancelAllJobs
+    self._jsc.sc().cancelAllJobs()
+    ^^^^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/java_gateway.py", line 1322, in __call__
+    return_value = get_return_value(
+                   ^^^^^^^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/pyspark.zip/pyspark/errors/exceptions/captured.py", line 179, in deco
+    return f(*a, **kw)
+           ^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/protocol.py", line 334, in get_return_value
+    raise Py4JError(
+py4j.protocol.Py4JError: An error occurred while calling o32.sc
+2026-04-13 11:38:14,547 - py4j.clientserver - INFO - Closing down clientserver connection
+2026-04-13 11:38:14,547 - root - ERROR - Exception while sending command.
+Traceback (most recent call last):
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/clientserver.py", line 511, in send_command
+    answer = smart_decode(self.stream.readline()[:-1])
+                          ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/socket.py", line 707, in readinto
+    return self._sock.recv_into(b)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/pyspark.zip/pyspark/context.py", line 381, in signal_handler
+    self.cancelAllJobs()
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/pyspark.zip/pyspark/context.py", line 2446, in cancelAllJobs
+    self._jsc.sc().cancelAllJobs()
+    ^^^^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/java_gateway.py", line 1322, in __call__
+    return_value = get_return_value(
+                   ^^^^^^^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/pyspark.zip/pyspark/errors/exceptions/captured.py", line 179, in deco
+    return f(*a, **kw)
+           ^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/protocol.py", line 334, in get_return_value
+    raise Py4JError(
+py4j.protocol.Py4JError: An error occurred while calling o32.sc
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/java_gateway.py", line 1038, in send_command
+    response = connection.send_command(command)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/clientserver.py", line 539, in send_command
+    raise Py4JNetworkError(
+py4j.protocol.Py4JNetworkError: Error while sending or receiving
+2026-04-13 11:38:14,549 - py4j.clientserver - INFO - Closing down clientserver connection
+2026-04-13 11:38:14,552 - py4j.clientserver - INFO - Closing down clientserver connection
+2026-04-13 11:38:28,452 - spark_streaming - INFO - Spark session created successfully for MinIO
+2026-04-13 11:38:30,202 - spark_streaming - INFO - Connected to Kafka successfully
+2026-04-13 11:38:30,671 - spark_streaming - INFO - JSON data extracted successfully
+2026-04-13 11:38:31,051 - spark_streaming - INFO - Data displayed successfully
+2026-04-13 11:38:33,307 - spark_streaming - INFO - Data written to MinIO successfully
+2026-04-13 11:44:37,163 - py4j.clientserver - INFO - Error while receiving.
+Traceback (most recent call last):
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/clientserver.py", line 511, in send_command
+    answer = smart_decode(self.stream.readline()[:-1])
+                          ^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: reentrant call inside <_io.BufferedReader name=4>
+2026-04-13 11:44:37,164 - py4j.clientserver - INFO - Closing down clientserver connection
+2026-04-13 11:44:37,164 - root - ERROR - Exception while sending command.
+Traceback (most recent call last):
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/clientserver.py", line 511, in send_command
+    answer = smart_decode(self.stream.readline()[:-1])
+                          ^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: reentrant call inside <_io.BufferedReader name=4>
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/java_gateway.py", line 1038, in send_command
+    response = connection.send_command(command)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/clientserver.py", line 539, in send_command
+    raise Py4JNetworkError(
+py4j.protocol.Py4JNetworkError: Error while sending or receiving
+2026-04-13 11:44:37,165 - py4j.clientserver - INFO - Error while receiving.
+Traceback (most recent call last):
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/clientserver.py", line 511, in send_command
+    answer = smart_decode(self.stream.readline()[:-1])
+                          ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/socket.py", line 707, in readinto
+    return self._sock.recv_into(b)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/pyspark.zip/pyspark/context.py", line 381, in signal_handler
+    self.cancelAllJobs()
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/pyspark.zip/pyspark/context.py", line 2446, in cancelAllJobs
+    self._jsc.sc().cancelAllJobs()
+    ^^^^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/java_gateway.py", line 1322, in __call__
+    return_value = get_return_value(
+                   ^^^^^^^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/pyspark.zip/pyspark/errors/exceptions/captured.py", line 179, in deco
+    return f(*a, **kw)
+           ^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/protocol.py", line 334, in get_return_value
+    raise Py4JError(
+py4j.protocol.Py4JError: An error occurred while calling o32.sc
+2026-04-13 11:44:37,166 - py4j.clientserver - INFO - Closing down clientserver connection
+2026-04-13 11:44:37,166 - root - ERROR - Exception while sending command.
+Traceback (most recent call last):
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/clientserver.py", line 511, in send_command
+    answer = smart_decode(self.stream.readline()[:-1])
+                          ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/socket.py", line 707, in readinto
+    return self._sock.recv_into(b)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/pyspark.zip/pyspark/context.py", line 381, in signal_handler
+    self.cancelAllJobs()
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/pyspark.zip/pyspark/context.py", line 2446, in cancelAllJobs
+    self._jsc.sc().cancelAllJobs()
+    ^^^^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/java_gateway.py", line 1322, in __call__
+    return_value = get_return_value(
+                   ^^^^^^^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/pyspark.zip/pyspark/errors/exceptions/captured.py", line 179, in deco
+    return f(*a, **kw)
+           ^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/protocol.py", line 334, in get_return_value
+    raise Py4JError(
+py4j.protocol.Py4JError: An error occurred while calling o32.sc
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/java_gateway.py", line 1038, in send_command
+    response = connection.send_command(command)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/clientserver.py", line 539, in send_command
+    raise Py4JNetworkError(
+py4j.protocol.Py4JNetworkError: Error while sending or receiving
+2026-04-13 11:44:37,167 - py4j.clientserver - INFO - Closing down clientserver connection
+2026-04-13 11:44:37,168 - py4j.clientserver - INFO - Closing down clientserver connection
+2026-04-13 11:45:06,724 - spark_streaming - INFO - Spark session created successfully for MinIO
+2026-04-13 11:45:08,478 - spark_streaming - INFO - Connected to Kafka successfully
+2026-04-13 11:45:08,905 - spark_streaming - INFO - JSON data extracted successfully
+2026-04-13 11:45:09,408 - spark_streaming - INFO - Data displayed successfully
+2026-04-13 11:45:11,522 - spark_streaming - INFO - Data written to MinIO successfully
+2026-04-13 11:47:22,179 - py4j.clientserver - INFO - Closing down clientserver connection
+2026-04-13 12:07:12,401 - spark_streaming - INFO - Spark session created successfully for MinIO
+2026-04-13 12:07:13,962 - spark_streaming - INFO - Connected to Kafka successfully
+2026-04-13 12:07:14,329 - spark_streaming - INFO - JSON data extracted successfully
+2026-04-13 12:07:14,645 - spark_streaming - INFO - Data displayed successfully
+2026-04-13 12:07:16,179 - spark_streaming - INFO - Data written to MinIO successfully
+2026-04-13 12:36:38,479 - py4j.clientserver - INFO - Error while receiving.
+Traceback (most recent call last):
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/clientserver.py", line 511, in send_command
+    answer = smart_decode(self.stream.readline()[:-1])
+                          ^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: reentrant call inside <_io.BufferedReader name=4>
+2026-04-13 12:36:38,480 - py4j.clientserver - INFO - Closing down clientserver connection
+2026-04-13 12:36:38,480 - root - ERROR - Exception while sending command.
+Traceback (most recent call last):
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/clientserver.py", line 511, in send_command
+    answer = smart_decode(self.stream.readline()[:-1])
+                          ^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: reentrant call inside <_io.BufferedReader name=4>
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/java_gateway.py", line 1038, in send_command
+    response = connection.send_command(command)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/clientserver.py", line 539, in send_command
+    raise Py4JNetworkError(
+py4j.protocol.Py4JNetworkError: Error while sending or receiving
+2026-04-13 12:36:38,482 - py4j.clientserver - INFO - Error while receiving.
+Traceback (most recent call last):
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/clientserver.py", line 511, in send_command
+    answer = smart_decode(self.stream.readline()[:-1])
+                          ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/socket.py", line 707, in readinto
+    return self._sock.recv_into(b)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/pyspark.zip/pyspark/context.py", line 381, in signal_handler
+    self.cancelAllJobs()
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/pyspark.zip/pyspark/context.py", line 2446, in cancelAllJobs
+    self._jsc.sc().cancelAllJobs()
+    ^^^^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/java_gateway.py", line 1322, in __call__
+    return_value = get_return_value(
+                   ^^^^^^^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/pyspark.zip/pyspark/errors/exceptions/captured.py", line 179, in deco
+    return f(*a, **kw)
+           ^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/protocol.py", line 334, in get_return_value
+    raise Py4JError(
+py4j.protocol.Py4JError: An error occurred while calling o32.sc
+2026-04-13 12:36:38,483 - py4j.clientserver - INFO - Closing down clientserver connection
+2026-04-13 12:36:38,483 - root - ERROR - Exception while sending command.
+Traceback (most recent call last):
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/clientserver.py", line 511, in send_command
+    answer = smart_decode(self.stream.readline()[:-1])
+                          ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/socket.py", line 707, in readinto
+    return self._sock.recv_into(b)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/pyspark.zip/pyspark/context.py", line 381, in signal_handler
+    self.cancelAllJobs()
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/pyspark.zip/pyspark/context.py", line 2446, in cancelAllJobs
+    self._jsc.sc().cancelAllJobs()
+    ^^^^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/java_gateway.py", line 1322, in __call__
+    return_value = get_return_value(
+                   ^^^^^^^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/pyspark.zip/pyspark/errors/exceptions/captured.py", line 179, in deco
+    return f(*a, **kw)
+           ^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/protocol.py", line 334, in get_return_value
+    raise Py4JError(
+py4j.protocol.Py4JError: An error occurred while calling o32.sc
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/java_gateway.py", line 1038, in send_command
+    response = connection.send_command(command)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/clientserver.py", line 539, in send_command
+    raise Py4JNetworkError(
+py4j.protocol.Py4JNetworkError: Error while sending or receiving
+2026-04-13 12:36:38,484 - py4j.clientserver - INFO - Closing down clientserver connection
+2026-04-13 12:36:38,485 - py4j.clientserver - INFO - Closing down clientserver connection
+2026-04-13 12:36:54,316 - spark_streaming - INFO - Spark session created successfully for MinIO
+2026-04-13 12:36:56,153 - spark_streaming - INFO - Connected to Kafka successfully
+2026-04-13 12:36:56,590 - spark_streaming - INFO - JSON data extracted successfully
+2026-04-13 12:36:56,884 - spark_streaming - INFO - Data displayed successfully
+2026-04-13 12:36:59,550 - spark_streaming - INFO - Data written to MinIO successfully
+2026-04-13 13:16:21,108 - py4j.clientserver - INFO - Error while receiving.
+Traceback (most recent call last):
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/clientserver.py", line 511, in send_command
+    answer = smart_decode(self.stream.readline()[:-1])
+                          ^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: reentrant call inside <_io.BufferedReader name=4>
+2026-04-13 13:16:21,123 - py4j.clientserver - INFO - Closing down clientserver connection
+2026-04-13 13:16:21,125 - root - ERROR - Exception while sending command.
+Traceback (most recent call last):
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/clientserver.py", line 511, in send_command
+    answer = smart_decode(self.stream.readline()[:-1])
+                          ^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: reentrant call inside <_io.BufferedReader name=4>
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/java_gateway.py", line 1038, in send_command
+    response = connection.send_command(command)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/clientserver.py", line 539, in send_command
+    raise Py4JNetworkError(
+py4j.protocol.Py4JNetworkError: Error while sending or receiving
+2026-04-13 13:16:21,130 - py4j.clientserver - INFO - Error while receiving.
+Traceback (most recent call last):
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/clientserver.py", line 511, in send_command
+    answer = smart_decode(self.stream.readline()[:-1])
+                          ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/socket.py", line 707, in readinto
+    return self._sock.recv_into(b)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/pyspark.zip/pyspark/context.py", line 381, in signal_handler
+    self.cancelAllJobs()
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/pyspark.zip/pyspark/context.py", line 2446, in cancelAllJobs
+    self._jsc.sc().cancelAllJobs()
+    ^^^^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/java_gateway.py", line 1322, in __call__
+    return_value = get_return_value(
+                   ^^^^^^^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/pyspark.zip/pyspark/errors/exceptions/captured.py", line 179, in deco
+    return f(*a, **kw)
+           ^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/protocol.py", line 334, in get_return_value
+    raise Py4JError(
+py4j.protocol.Py4JError: An error occurred while calling o32.sc
+2026-04-13 13:16:21,132 - py4j.clientserver - INFO - Closing down clientserver connection
+2026-04-13 13:16:21,132 - root - ERROR - Exception while sending command.
+Traceback (most recent call last):
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/clientserver.py", line 511, in send_command
+    answer = smart_decode(self.stream.readline()[:-1])
+                          ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/socket.py", line 707, in readinto
+    return self._sock.recv_into(b)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/pyspark.zip/pyspark/context.py", line 381, in signal_handler
+    self.cancelAllJobs()
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/pyspark.zip/pyspark/context.py", line 2446, in cancelAllJobs
+    self._jsc.sc().cancelAllJobs()
+    ^^^^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/java_gateway.py", line 1322, in __call__
+    return_value = get_return_value(
+                   ^^^^^^^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/pyspark.zip/pyspark/errors/exceptions/captured.py", line 179, in deco
+    return f(*a, **kw)
+           ^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/protocol.py", line 334, in get_return_value
+    raise Py4JError(
+py4j.protocol.Py4JError: An error occurred while calling o32.sc
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/java_gateway.py", line 1038, in send_command
+    response = connection.send_command(command)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/clientserver.py", line 539, in send_command
+    raise Py4JNetworkError(
+py4j.protocol.Py4JNetworkError: Error while sending or receiving
+2026-04-13 13:16:21,132 - py4j.clientserver - INFO - Closing down clientserver connection
+2026-04-13 13:16:21,136 - py4j.clientserver - INFO - Closing down clientserver connection
+2026-04-13 16:37:08,933 - spark_streaming - INFO - Spark session created successfully for MinIO
+2026-04-13 16:37:13,897 - spark_streaming - INFO - Connected to Kafka successfully
+2026-04-13 16:37:14,296 - spark_streaming - INFO - JSON data extracted successfully
+2026-04-13 16:37:14,724 - spark_streaming - INFO - Data displayed successfully
+2026-04-13 16:37:17,191 - spark_streaming - INFO - Data written to MinIO successfully
+2026-04-13 16:37:19,817 - py4j.clientserver - INFO - Closing down clientserver connection
+2026-04-13 16:39:57,174 - spark_streaming - INFO - Spark session created successfully for MinIO
+2026-04-13 16:39:58,593 - spark_streaming - INFO - Connected to Kafka successfully
+2026-04-13 16:39:58,960 - spark_streaming - INFO - JSON data extracted successfully
+2026-04-13 16:39:59,269 - spark_streaming - INFO - Data displayed successfully
+2026-04-13 16:40:00,576 - spark_streaming - INFO - Data written to MinIO successfully
+2026-04-13 16:40:00,983 - py4j.clientserver - INFO - Closing down clientserver connection
+2026-04-13 16:42:55,882 - spark_streaming - INFO - Spark session created successfully for MinIO
+2026-04-13 16:42:57,432 - spark_streaming - INFO - Connected to Kafka successfully
+2026-04-13 16:42:57,808 - spark_streaming - INFO - JSON data extracted successfully
+2026-04-13 16:42:58,146 - spark_streaming - INFO - Data displayed successfully
+2026-04-13 16:42:59,676 - spark_streaming - INFO - Data written to MinIO successfully
+2026-04-13 17:07:47,535 - py4j.clientserver - INFO - Error while receiving.
+Traceback (most recent call last):
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/clientserver.py", line 511, in send_command
+    answer = smart_decode(self.stream.readline()[:-1])
+                          ^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: reentrant call inside <_io.BufferedReader name=4>
+2026-04-13 17:07:47,536 - py4j.clientserver - INFO - Closing down clientserver connection
+2026-04-13 17:07:47,536 - root - ERROR - Exception while sending command.
+Traceback (most recent call last):
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/clientserver.py", line 511, in send_command
+    answer = smart_decode(self.stream.readline()[:-1])
+                          ^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: reentrant call inside <_io.BufferedReader name=4>
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/java_gateway.py", line 1038, in send_command
+    response = connection.send_command(command)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/clientserver.py", line 539, in send_command
+    raise Py4JNetworkError(
+py4j.protocol.Py4JNetworkError: Error while sending or receiving
+2026-04-13 17:07:47,537 - py4j.clientserver - INFO - Error while receiving.
+Traceback (most recent call last):
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/clientserver.py", line 511, in send_command
+    answer = smart_decode(self.stream.readline()[:-1])
+                          ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/socket.py", line 707, in readinto
+    return self._sock.recv_into(b)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/pyspark.zip/pyspark/context.py", line 381, in signal_handler
+    self.cancelAllJobs()
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/pyspark.zip/pyspark/context.py", line 2446, in cancelAllJobs
+    self._jsc.sc().cancelAllJobs()
+    ^^^^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/java_gateway.py", line 1322, in __call__
+    return_value = get_return_value(
+                   ^^^^^^^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/pyspark.zip/pyspark/errors/exceptions/captured.py", line 179, in deco
+    return f(*a, **kw)
+           ^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/protocol.py", line 334, in get_return_value
+    raise Py4JError(
+py4j.protocol.Py4JError: An error occurred while calling o32.sc
+2026-04-13 17:07:47,541 - py4j.clientserver - INFO - Closing down clientserver connection
+2026-04-13 17:07:47,541 - root - ERROR - Exception while sending command.
+Traceback (most recent call last):
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/clientserver.py", line 511, in send_command
+    answer = smart_decode(self.stream.readline()[:-1])
+                          ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/socket.py", line 707, in readinto
+    return self._sock.recv_into(b)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/pyspark.zip/pyspark/context.py", line 381, in signal_handler
+    self.cancelAllJobs()
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/pyspark.zip/pyspark/context.py", line 2446, in cancelAllJobs
+    self._jsc.sc().cancelAllJobs()
+    ^^^^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/java_gateway.py", line 1322, in __call__
+    return_value = get_return_value(
+                   ^^^^^^^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/pyspark.zip/pyspark/errors/exceptions/captured.py", line 179, in deco
+    return f(*a, **kw)
+           ^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/protocol.py", line 334, in get_return_value
+    raise Py4JError(
+py4j.protocol.Py4JError: An error occurred while calling o32.sc
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/java_gateway.py", line 1038, in send_command
+    response = connection.send_command(command)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/duc1808/spark/spark-3.5.8-bin-hadoop3/python/lib/py4j-0.10.9.7-src.zip/py4j/clientserver.py", line 539, in send_command
+    raise Py4JNetworkError(
+py4j.protocol.Py4JNetworkError: Error while sending or receiving
+2026-04-13 17:07:47,541 - py4j.clientserver - INFO - Closing down clientserver connection
+2026-04-13 17:07:47,542 - py4j.clientserver - INFO - Closing down clientserver connection
+2026-04-14 08:26:28,016 - spark_streaming - INFO - Spark session created successfully for MinIO
+2026-04-14 08:26:29,727 - spark_streaming - INFO - Connected to Kafka successfully
+2026-04-14 08:26:30,131 - spark_streaming - INFO - JSON data extracted successfully
+2026-04-14 08:26:30,459 - spark_streaming - INFO - Data displayed successfully
+2026-04-14 08:26:32,042 - spark_streaming - INFO - Data written to MinIO successfully
+2026-04-14 08:26:34,324 - py4j.clientserver - INFO - Closing down clientserver connection
+2026-04-14 08:27:31,092 - spark_streaming - INFO - Spark session created successfully for MinIO
+2026-04-14 08:27:35,290 - spark_streaming - INFO - Connected to Kafka successfully
+2026-04-14 08:27:35,570 - spark_streaming - INFO - JSON data extracted successfully
+2026-04-14 08:27:35,832 - spark_streaming - INFO - Data displayed successfully
+2026-04-14 08:27:37,114 - spark_streaming - INFO - Data written to MinIO successfully
