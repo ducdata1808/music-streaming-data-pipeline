@@ -1,6 +1,6 @@
 #!/bin/bash
 echo "=================================="
-echo "    Mở ClickHouse Client CLI"
+echo "    Open ClickHouse Client CLI"
 echo "=================================="
 
 CLICKHOUSE_BIN="/home/duc1808/clickhouse/clickhouse"

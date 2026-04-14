@@ -1,0 +1,59 @@
+# Python environments & cache
+venv/
+.venv
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Environment variables
+.env
+
+# Spark and Logging
+logs/
+checkpoints/
+*.jar
+derby.log
+metastore_db/
+
+# Airflow
+airflow.cfg
+airflow.db
+airflow-webserver.pid
+unittests.cfg
+webserver_config.py
+logs/
+
+# DBT
+dbt/target/
+dbt/dbt_packages/
+dbt/logs/
+music_events_transform/target/
+music_events_transform/dbt_packages/
+music_events_transform/logs/
+.user.yml
+
+# Jupyter Notebooks
+.ipynb_checkpoints
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Heavy Binaries & Data (If downloaded locally)
+kafka_2.13-*.tgz
+spark-*bin-hadoop*.tgz
+minio
+clickhouse
+minio_data/
+clickhouse_data/
+eventsim/target/

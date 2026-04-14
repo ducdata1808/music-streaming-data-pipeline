@@ -2,3 +2,12 @@ grant permissions to all files in the project
 
 cd ~/eventsim_project/scripts
 chmod +x *.sh
+
+order:
+1. run_eventsim.sh
+2. create_kafka_topic.sh
+3. run_minio.sh
+4. run_spark.sh
+5. run_clickhouse.sh
+6. clickhouse_client.sh
+7. trigger_airflow.sh
