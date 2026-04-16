@@ -1,0 +1,323 @@
+# =============================================================================
+# docker-compose.yaml — Music Events Data Pipeline
+# =============================================================================
+# Services:
+#   1. zookeeper       — Kafka dependency
+#   2. kafka           — Message broker
+#   3. minio           — S3-compatible Data Lake
+#   4. minio-init      — One-time bucket creation job
+#   5. clickhouse      — OLAP analytical database
+#   6. eventsim        — Simulated event data generator
+#   7. spark           — PySpark Structured Streaming
+#   8. airflow-init    — DB init + connection setup (runs once)
+#   9. airflow-webserver
+#  10. airflow-scheduler
+#  11. streamlit       — Dashboard app
+# =============================================================================
+
+x-airflow-common: &airflow-common
+  build:
+    context: ./airflow
+    dockerfile: Dockerfile
+  environment:
+    AIRFLOW__CORE__EXECUTOR: LocalExecutor
+    AIRFLOW__CORE__DAGS_FOLDER: /opt/airflow/dags
+    AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@airflow-db:5432/airflow
+    AIRFLOW__CORE__LOAD_EXAMPLES: "false"
+    AIRFLOW__WEBSERVER__SECRET_KEY: "music_events_secret_key"
+    # Connection: ClickHouse
+    AIRFLOW_CONN_CLICKHOUSE_DEFAULT: "clickhouse://default:@clickhouse:9000/music_analytics"
+    # Connection: MinIO (S3)
+    AIRFLOW_CONN_MINIO_DEFAULT: >-
+      aws://minioadmin:minioadmin@?endpoint_url=http%3A%2F%2Fminio%3A9050
+    # DBT project path inside container
+    DBT_PROJECT_DIR: /opt/airflow/dbt
+  volumes:
+    - ./airflow:/opt/airflow/dags         # DAG files
+    - ./dbt:/opt/airflow/dbt              # DBT project
+    - airflow-logs:/opt/airflow/logs
+  depends_on:
+    airflow-db:
+      condition: service_healthy
+  networks:
+    - pipeline-net
+  restart: unless-stopped
+
+services:
+
+  # ---------------------------------------------------------------------------
+  # 1. ZOOKEEPER — Required by Kafka
+  # ---------------------------------------------------------------------------
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.6.1
+    container_name: zookeeper
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    ports:
+      - "2181:2181"
+    networks:
+      - pipeline-net
+    restart: unless-stopped
+
+  # ---------------------------------------------------------------------------
+  # 2. KAFKA — Message Broker
+  # ---------------------------------------------------------------------------
+  kafka:
+    image: confluentinc/cp-kafka:7.6.1
+    container_name: kafka
+    depends_on:
+      - zookeeper
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      # PLAINTEXT_HOST → accessible from host machine; PLAINTEXT → inside Docker network
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,PLAINTEXT_HOST://localhost:29092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+      KAFKA_LOG_RETENTION_HOURS: 24
+    ports:
+      - "9092:9092"       # internal (container-to-container)
+      - "29092:29092"     # external (host access)
+    networks:
+      - pipeline-net
+    restart: unless-stopped
+
+  # ---------------------------------------------------------------------------
+  # 3. MINIO — S3-Compatible Data Lake
+  # Port 9050 = API, 9051 = Web Console (avoids conflict with ClickHouse :9000)
+  # ---------------------------------------------------------------------------
+  minio:
+    image: minio/minio:latest
+    container_name: minio
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin
+    command: server /data --address ":9050" --console-address ":9051"
+    ports:
+      - "9050:9050"   # S3 API
+      - "9051:9051"   # Web Console → http://localhost:9051
+    volumes:
+      - minio-data:/data
+    networks:
+      - pipeline-net
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9050/minio/health/live"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+
+  # ---------------------------------------------------------------------------
+  # 4. MINIO INIT — Create the music-events bucket (runs once, then exits)
+  # ---------------------------------------------------------------------------
+  minio-init:
+    image: minio/mc:latest
+    container_name: minio-init
+    depends_on:
+      minio:
+        condition: service_healthy
+    entrypoint: >
+      /bin/sh -c "
+        mc alias set local http://minio:9050 minioadmin minioadmin &&
+        mc mb --ignore-existing local/music-events &&
+        echo 'Bucket music-events ready.'
+      "
+    networks:
+      - pipeline-net
+    restart: "no"
+
+  # ---------------------------------------------------------------------------
+  # 5. CLICKHOUSE — OLAP Database
+  # Port 9000 = Native TCP, 8123 = HTTP interface
+  # ---------------------------------------------------------------------------
+  clickhouse:
+    image: clickhouse/clickhouse-server:26.4
+    container_name: clickhouse
+    environment:
+      CLICKHOUSE_DB: music_analytics
+      CLICKHOUSE_USER: default
+      CLICKHOUSE_PASSWORD: ""
+      CLICKHOUSE_DEFAULT_ACCESS_MANAGEMENT: 1
+    ports:
+      - "8123:8123"   # HTTP interface
+      - "9000:9000"   # Native TCP (used by Airflow, clickhouse-driver)
+    volumes:
+      - clickhouse-data:/var/lib/clickhouse
+    networks:
+      - pipeline-net
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:8123/ping"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+
+  # ---------------------------------------------------------------------------
+  # 6. EVENTSIM — Simulated Event Data Generator → Kafka
+  # ---------------------------------------------------------------------------
+  eventsim:
+    build:
+      context: ./eventsim
+      dockerfile: Dockerfile
+    container_name: eventsim
+    environment:
+      KAFKA_BOOTSTRAP_SERVER: kafka:9092
+      KAFKA_TOPIC: music_events
+      N_RECORDS: 2000
+    depends_on:
+      - kafka
+    networks:
+      - pipeline-net
+    restart: on-failure
+
+  # ---------------------------------------------------------------------------
+  # 7. SPARK — PySpark Structured Streaming (Kafka → MinIO)
+  # ---------------------------------------------------------------------------
+  spark:
+    build:
+      context: ./spark_streaming
+      dockerfile: Dockerfile
+    container_name: spark
+    environment:
+      # Override hardcoded localhost values in run_spark.py
+      KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+      MINIO_ENDPOINT: http://minio:9050
+      MINIO_ACCESS_KEY: minioadmin
+      MINIO_SECRET_KEY: minioadmin
+      PYSPARK_PYTHON: python3
+      PYSPARK_DRIVER_PYTHON: python3
+    depends_on:
+      minio:
+        condition: service_healthy
+      kafka:
+        condition: service_started
+    volumes:
+      - spark-checkpoints:/app/checkpoints
+      - spark-logs:/app/logs
+    networks:
+      - pipeline-net
+    restart: on-failure
+
+  # ---------------------------------------------------------------------------
+  # 8. AIRFLOW — PostgreSQL metadata backend
+  # ---------------------------------------------------------------------------
+  airflow-db:
+    image: postgres:15
+    container_name: airflow-db
+    environment:
+      POSTGRES_USER: airflow
+      POSTGRES_PASSWORD: airflow
+      POSTGRES_DB: airflow
+    volumes:
+      - airflow-db-data:/var/lib/postgresql/data
+    networks:
+      - pipeline-net
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "airflow"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ---------------------------------------------------------------------------
+  # 9. AIRFLOW INIT — DB migration + connection setup (runs once)
+  # ---------------------------------------------------------------------------
+  airflow-init:
+    <<: *airflow-common
+    container_name: airflow-init
+    command: >
+      bash -c "
+        airflow db migrate &&
+        airflow users create
+          --username admin
+          --password admin
+          --firstname Admin
+          --lastname User
+          --role Admin
+          --email admin@example.com &&
+        airflow connections add 'minio_default'
+          --conn-type 'aws'
+          --conn-extra '{\"endpoint_url\": \"http://minio:9050\", \"aws_access_key_id\": \"minioadmin\", \"aws_secret_access_key\": \"minioadmin\"}' || true &&
+        airflow connections add 'clickhouse_default'
+          --conn-type 'clickhouse'
+          --conn-host 'clickhouse'
+          --conn-port 9000
+          --conn-login 'default'
+          --conn-password ''
+          --conn-schema 'music_analytics' || true &&
+        airflow connections add 'spark_default'
+          --conn-type 'spark'
+          --conn-host 'local'
+          --conn-extra '{\"master\": \"local[*]\"}' || true
+      "
+    restart: "no"
+
+  # ---------------------------------------------------------------------------
+  # 10. AIRFLOW WEBSERVER — UI at http://localhost:8080
+  # ---------------------------------------------------------------------------
+  airflow-webserver:
+    <<: *airflow-common
+    container_name: airflow-webserver
+    command: airflow webserver
+    ports:
+      - "8080:8080"
+    depends_on:
+      airflow-init:
+        condition: service_completed_successfully
+    restart: unless-stopped
+
+  # ---------------------------------------------------------------------------
+  # 11. AIRFLOW SCHEDULER — DAG triggers & task execution
+  # ---------------------------------------------------------------------------
+  airflow-scheduler:
+    <<: *airflow-common
+    container_name: airflow-scheduler
+    command: airflow scheduler
+    depends_on:
+      airflow-init:
+        condition: service_completed_successfully
+    restart: unless-stopped
+
+  # ---------------------------------------------------------------------------
+  # 12. STREAMLIT — Dashboard App at http://localhost:8501
+  # ---------------------------------------------------------------------------
+  streamlit:
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+    container_name: streamlit
+    environment:
+      # Override hardcoded localhost in app.py
+      CLICKHOUSE_HOST: clickhouse
+      CLICKHOUSE_PORT: "8123"
+    ports:
+      - "8501:8501"
+    depends_on:
+      clickhouse:
+        condition: service_healthy
+    volumes:
+      - streamlit-logs:/app/logs
+    networks:
+      - pipeline-net
+    restart: unless-stopped
+
+# =============================================================================
+# Named Volumes
+# =============================================================================
+volumes:
+  minio-data:
+  clickhouse-data:
+  airflow-db-data:
+  airflow-logs:
+  spark-checkpoints:
+  spark-logs:
+  streamlit-logs:
+
+# =============================================================================
+# Network — all services communicate on this internal bridge
+# =============================================================================
+networks:
+  pipeline-net:
+    driver: bridge
