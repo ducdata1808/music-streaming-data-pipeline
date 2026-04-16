@@ -181,11 +181,12 @@ services:
       dockerfile: Dockerfile
     container_name: spark
     environment:
-      # Override hardcoded localhost values in run_spark.py
       KAFKA_BOOTSTRAP_SERVERS: kafka:9092
       MINIO_ENDPOINT: http://minio:9050
       MINIO_ACCESS_KEY: minioadmin
       MINIO_SECRET_KEY: minioadmin
+      LOG_FILE: /app/logs/run_spark.log
+      CHECKPOINT_PATH: /app/checkpoints/music-events
       PYSPARK_PYTHON: python3
       PYSPARK_DRIVER_PYTHON: python3
     depends_on:
@@ -289,9 +290,9 @@ services:
       dockerfile: Dockerfile
     container_name: streamlit
     environment:
-      # Override hardcoded localhost in app.py
       CLICKHOUSE_HOST: clickhouse
       CLICKHOUSE_PORT: "8123"
+      LOG_FILE: /app/logs/app.log
     ports:
       - "8501:8501"
     depends_on:
