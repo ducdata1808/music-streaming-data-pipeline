@@ -1,3 +1,5 @@
+import os
+import sys
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -7,16 +9,15 @@ import logging # check error
 from typing import Optional, List, Dict, Any # for type hint
 from colorama import Fore, Style, init # for color output
 import clickhouse_connect # for clickhouse
-import sys
 
-# variables
-LOG_FILE = "/home/duc1808/eventsim_project/logs/app.log" # log file name
-CLICKHOUSE_HOST = "localhost" # clickhouse host
-CLICKHOUSE_PORT = 8123 # clickhouse port
-CLICKHOUSE_USER = "default" # clickhouse user
-CLICKHOUSE_PASSWORD = "" # clickhouse password
-CLICKHOUSE_DATABASE = "music_analytics" # clickhouse database
-VERBOSE = True # verbose output
+# ── Config: đọc từ biến môi trường, fallback về giá trị local khi chạy ngoài Docker ──
+LOG_FILE            = os.environ.get("LOG_FILE",             "/home/duc1808/eventsim_project/logs/app.log")
+CLICKHOUSE_HOST     = os.environ.get("CLICKHOUSE_HOST",     "localhost")
+CLICKHOUSE_PORT     = int(os.environ.get("CLICKHOUSE_PORT", "8123"))
+CLICKHOUSE_USER     = os.environ.get("CLICKHOUSE_USER",     "default")
+CLICKHOUSE_PASSWORD = os.environ.get("CLICKHOUSE_PASSWORD", "")
+CLICKHOUSE_DATABASE = os.environ.get("CLICKHOUSE_DATABASE", "music_analytics")
+VERBOSE             = True # verbose output
 
 
 class Background_colors:
