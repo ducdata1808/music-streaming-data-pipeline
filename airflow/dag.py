@@ -9,15 +9,17 @@ from datetime import timedelta # used to set retry delay
 from clickhouse_driver import Client # used to interact with clickhouse
 import boto3 # used to interact with AWS services
 from datetime import datetime, timedelta
+import os
 
-# Parameters
-SPARK_APP_PATH   = "/home/duc1808/eventsim_project/run_spark.py"
-MINIO_BUCKET     = "music-events"
-DBT_PROJECT_DIR  = "/home/duc1808/eventsim_project/dbt"
-DBT_PROFILE_NAME = "music_events_transform"
-MINIO_ENDPOINT_URL = "http://localhost:9050"
-MINIO_ACCESS_KEY = "minioadmin"
-MINIO_SECRET_KEY = "minioadmin"
+# Parameters — đọc từ env var, fallback về giá trị local
+SPARK_APP_PATH      = os.environ.get("SPARK_APP_PATH",   "/home/duc1808/eventsim_project/run_spark.py")
+MINIO_BUCKET        = os.environ.get("MINIO_BUCKET",     "music-events")
+DBT_PROJECT_DIR     = os.environ.get("DBT_PROJECT_DIR",  "/home/duc1808/eventsim_project/dbt")
+DBT_PROFILE_NAME    = os.environ.get("DBT_PROFILE_NAME", "music_events_transform")
+MINIO_ENDPOINT_URL  = os.environ.get("MINIO_ENDPOINT",   "http://localhost:9050")
+MINIO_ACCESS_KEY    = os.environ.get("MINIO_ACCESS_KEY", "minioadmin")
+MINIO_SECRET_KEY    = os.environ.get("MINIO_SECRET_KEY", "minioadmin")
+CLICKHOUSE_HOST     = os.environ.get("CLICKHOUSE_HOST",  "localhost")
 
 default_args = {
     'owner': 'airflow',
@@ -72,7 +74,7 @@ check_minio = PythonOperator(
 
 # task 3: check data in ClickHouse
 def assert_clickhouse_has_data():
-    client = Client(host='localhost', port=9000)
+    client = Client(host=CLICKHOUSE_HOST, port=9000)
     result = client.execute("SELECT count() FROM music_analytics.events")
     count = result[0][0]
     print(f"[check_clickhouse] events table row count: {count}")
