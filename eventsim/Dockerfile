@@ -6,15 +6,16 @@
 FROM eclipse-temurin:8-jdk-jammy AS builder
 
 # Install sbt
-RUN apt-get update && apt-get install -y curl gnupg && \
+RUN apt-get update && apt-get install -y curl gnupg git && \
     echo "deb https://repo.scala-sbt.org/scalasbt/debian all main" | tee /etc/apt/sources.list.d/sbt.list && \
     echo "deb https://repo.scala-sbt.org/scalasbt/debian /" | tee -a /etc/apt/sources.list.d/sbt.list && \
     curl -sL "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x2EE0EA64E40A89B84B2DF73499E82A75642AC823" | apt-key add && \
     apt-get update && apt-get install -y sbt
 
-WORKDIR /app
+# Clone EventSim source code from GitHub
+RUN git clone https://github.com/Interana/eventsim.git /app
 
-COPY . .
+WORKDIR /app
 
 RUN sbt assembly
 
@@ -33,7 +34,8 @@ RUN curl -O https://archive.apache.org/dist/kafka/${KAFKA_VERSION}/kafka_${SCALA
 WORKDIR /app
 
 COPY --from=builder /app/target/scala-2.12/eventsim-assembly-2.0.jar ./eventsim.jar
-COPY examples ./examples
+# examples/ directory is taken from the cloned repo in builder stage
+COPY --from=builder /app/examples ./examples
 
 ENV KAFKA_BOOTSTRAP_SERVER="kafka:9092"
 ENV KAFKA_TOPIC="music_events"
