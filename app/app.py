@@ -10,14 +10,19 @@ from typing import Optional, List, Dict, Any # for type hint
 from colorama import Fore, Style, init # for color output
 import clickhouse_connect # for clickhouse
 
-# ── Config: đọc từ biến môi trường, fallback về giá trị local khi chạy ngoài Docker ──
-LOG_FILE            = os.environ.get("LOG_FILE",             "/home/duc1808/eventsim_project/logs/app.log")
-CLICKHOUSE_HOST     = os.environ.get("CLICKHOUSE_HOST",     "localhost")
-CLICKHOUSE_PORT     = int(os.environ.get("CLICKHOUSE_PORT", "8123"))
-CLICKHOUSE_USER     = os.environ.get("CLICKHOUSE_USER",     "default")
+# Parameters
+# Dynamic path: use script's own directory so it works both locally and in Docker
+_APP_DIR = os.path.dirname(os.path.abspath(__file__))
+_DEFAULT_LOG_FILE = os.path.join(_APP_DIR, "logs", "app.log")
+os.makedirs(os.path.join(_APP_DIR, "logs"), exist_ok=True)
+
+LOG_FILE = os.environ.get("LOG_FILE", _DEFAULT_LOG_FILE)
+CLICKHOUSE_HOST = os.environ.get("CLICKHOUSE_HOST", "localhost")
+CLICKHOUSE_PORT = int(os.environ.get("CLICKHOUSE_PORT", "8123"))
+CLICKHOUSE_USER = os.environ.get("CLICKHOUSE_USER", "default")
 CLICKHOUSE_PASSWORD = os.environ.get("CLICKHOUSE_PASSWORD", "")
 CLICKHOUSE_DATABASE = os.environ.get("CLICKHOUSE_DATABASE", "music_analytics")
-VERBOSE             = True # verbose output
+VERBOSE = True # verbose output
 
 
 class Background_colors:

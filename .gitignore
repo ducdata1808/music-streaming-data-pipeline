@@ -26,9 +26,19 @@ airflow.db
 airflow-webserver.pid
 unittests.cfg
 webserver_config.py
-logs/
 standalone_admin_password.txt
 
+# Airflow runtime directories (generated at runtime)
+access/
+flags/
+format_schemas/
+metadata/
+metadata_dropped/
+preprocessed_configs/
+store/
+tmp/
+user_files/
+uuid
 
 # DBT
 dbt/target/
@@ -60,7 +70,13 @@ minio_data/
 clickhouse_data/
 eventsim/target/
 
-# my files
+# My files / temp files
 note.txt
+docker_note.txt
 future_update.txt
+sample_message.txt
+run_spark.log
 *.log
+
+# Data directory (Spark intermediate output)
+data/

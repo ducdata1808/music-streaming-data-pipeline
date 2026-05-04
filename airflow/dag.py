@@ -11,15 +11,15 @@ import boto3 # used to interact with AWS services
 from datetime import datetime, timedelta
 import os
 
-# Parameters — đọc từ env var, fallback về giá trị local
-SPARK_APP_PATH      = os.environ.get("SPARK_APP_PATH",   "/home/duc1808/eventsim_project/run_spark.py")
-MINIO_BUCKET        = os.environ.get("MINIO_BUCKET",     "music-events")
-DBT_PROJECT_DIR     = os.environ.get("DBT_PROJECT_DIR",  "/home/duc1808/eventsim_project/dbt")
-DBT_PROFILE_NAME    = os.environ.get("DBT_PROFILE_NAME", "music_events_transform")
-MINIO_ENDPOINT_URL  = os.environ.get("MINIO_ENDPOINT",   "http://localhost:9050")
-MINIO_ACCESS_KEY    = os.environ.get("MINIO_ACCESS_KEY", "minioadmin")
-MINIO_SECRET_KEY    = os.environ.get("MINIO_SECRET_KEY", "minioadmin")
-CLICKHOUSE_HOST     = os.environ.get("CLICKHOUSE_HOST",  "localhost")
+# Parameters
+SPARK_APP_PATH = os.environ.get("SPARK_APP_PATH", "/opt/airflow/spark_streaming/run_spark.py")
+MINIO_BUCKET = os.environ.get("MINIO_BUCKET", "music-events")
+DBT_PROJECT_DIR = os.environ.get("DBT_PROJECT_DIR", "/opt/airflow/dbt")
+DBT_PROFILE_NAME = os.environ.get("DBT_PROFILE_NAME", "music_events_transform")
+MINIO_ENDPOINT_URL = os.environ.get("MINIO_ENDPOINT", "http://localhost:9050")
+MINIO_ACCESS_KEY = os.environ.get("MINIO_ACCESS_KEY", "minioadmin")
+MINIO_SECRET_KEY = os.environ.get("MINIO_SECRET_KEY", "minioadmin")
+CLICKHOUSE_HOST = os.environ.get("CLICKHOUSE_HOST", "localhost")
 
 default_args = {
     'owner': 'airflow',
@@ -57,10 +57,10 @@ def check_new_files_in_minio(**context):
     all_files = response.get('Contents', [])
     print(f"[check_minio] total files in bucket: {len(all_files)}")
     for obj in all_files:
-        print(f"  - {obj['Key']} | LastModified: {obj['LastModified']}")
+        print(f"  - {obj['Key']} | Size: {obj.get('Size', 0)} bytes | LastModified: {obj['LastModified']}")
     new_files = [
         obj for obj in all_files
-        if obj['LastModified'].replace(tzinfo=None) >= cutoff
+        if obj['LastModified'].replace(tzinfo=None) >= cutoff and obj['Key'].endswith('.parquet')
     ]
     print(f"[check_minio] found {len(new_files)} new files in last 24 hours")
     if len(new_files) == 0:
@@ -75,6 +75,13 @@ check_minio = PythonOperator(
 # task 3: check data in ClickHouse
 def assert_clickhouse_has_data():
     client = Client(host=CLICKHOUSE_HOST, port=9000)
+    
+    try:
+        direct = client.execute("SELECT count() FROM s3('http://minio:9050/music-events/data/*.parquet', 'minioadmin', 'minioadmin', 'Parquet')")
+        print(f"[check_clickhouse] direct s3 function count: {direct[0][0]}")
+    except Exception as e:
+        print(f"[check_clickhouse] direct s3 function error: {e}")
+
     result = client.execute("SELECT count() FROM music_analytics.events")
     count = result[0][0]
     print(f"[check_clickhouse] events table row count: {count}")

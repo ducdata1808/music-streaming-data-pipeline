@@ -33,7 +33,7 @@ RUN curl -O https://archive.apache.org/dist/kafka/${KAFKA_VERSION}/kafka_${SCALA
 
 WORKDIR /app
 
-COPY --from=builder /app/target/scala-2.12/eventsim-assembly-2.0.jar ./eventsim.jar
+COPY --from=builder /app/target/scala-2.12/eventsim-assembly-1.0.jar ./eventsim.jar
 # examples/ directory is taken from the cloned repo in builder stage
 COPY --from=builder /app/examples ./examples
 
@@ -41,13 +41,8 @@ ENV KAFKA_BOOTSTRAP_SERVER="kafka:9092"
 ENV KAFKA_TOPIC="music_events"
 ENV N_RECORDS=2000
 
-# Create run script
-RUN echo '#!/bin/bash\n\
-echo "Starting EventSim -> Kafka Pipe ($KAFKA_BOOTSTRAP_SERVER)"\n\
-java -jar eventsim.jar -c "examples/example-config.json" \\\n\
-    -n $N_RECORDS \\\n\
-    --start-time "$(date -u +"%Y-%m-%dT%H:%M:%S")" \\\n\
-    --continuous | /opt/kafka/bin/kafka-console-producer.sh --bootstrap-server $KAFKA_BOOTSTRAP_SERVER --topic $KAFKA_TOPIC' > /app/run.sh && \
-    chmod +x /app/run.sh
+# Copy and setup run script
+COPY run.sh /app/run.sh
+RUN chmod +x /app/run.sh
 
 ENTRYPOINT ["/app/run.sh"]

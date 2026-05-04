@@ -27,14 +27,17 @@ x-airflow-common: &airflow-common
     AIRFLOW__WEBSERVER__SECRET_KEY: "music_events_secret_key"
     # Connection: ClickHouse
     AIRFLOW_CONN_CLICKHOUSE_DEFAULT: "clickhouse://default:@clickhouse:9000/music_analytics"
+    CLICKHOUSE_HOST: "clickhouse"
     # Connection: MinIO (S3)
     AIRFLOW_CONN_MINIO_DEFAULT: >-
       aws://minioadmin:minioadmin@?endpoint_url=http%3A%2F%2Fminio%3A9050
+    MINIO_ENDPOINT: "http://minio:9050"
     # DBT project path inside container
     DBT_PROJECT_DIR: /opt/airflow/dbt
   volumes:
     - ./airflow:/opt/airflow/dags         # DAG files
     - ./dbt:/opt/airflow/dbt              # DBT project
+    - ./spark_streaming:/opt/airflow/spark_streaming  # Spark script for SparkSubmitOperator
     - airflow-logs:/opt/airflow/logs
   depends_on:
     airflow-db:
@@ -122,7 +125,8 @@ services:
       /bin/sh -c "
         mc alias set local http://minio:9050 minioadmin minioadmin &&
         mc mb --ignore-existing local/music-events &&
-        echo 'Bucket music-events ready.'
+        mc rm -r --force local/music-events/data/ || true &&
+        echo 'Bucket music-events ready and old data cleared.'
       "
     networks:
       - pipeline-net
@@ -133,7 +137,7 @@ services:
   # Port 9000 = Native TCP, 8123 = HTTP interface
   # ---------------------------------------------------------------------------
   clickhouse:
-    image: clickhouse/clickhouse-server:26.4
+    image: clickhouse/clickhouse-server:latest
     container_name: clickhouse
     environment:
       CLICKHOUSE_DB: music_analytics
@@ -145,6 +149,7 @@ services:
       - "9000:9000"   # Native TCP (used by Airflow, clickhouse-driver)
     volumes:
       - clickhouse-data:/var/lib/clickhouse
+      - ./scripts/clickhouse_init.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
       - pipeline-net
     restart: unless-stopped
@@ -155,22 +160,71 @@ services:
       retries: 5
 
   # ---------------------------------------------------------------------------
-  # 6. EVENTSIM — Simulated Event Data Generator → Kafka
+  # 5b. CLICKHOUSE INIT — Create database and tables (runs once)
   # ---------------------------------------------------------------------------
-  eventsim:
-    build:
-      context: ./eventsim
-      dockerfile: Dockerfile
-    container_name: eventsim
-    environment:
-      KAFKA_BOOTSTRAP_SERVER: kafka:9092
-      KAFKA_TOPIC: music_events
-      N_RECORDS: 2000
+  clickhouse-init:
+    image: clickhouse/clickhouse-server:latest
+    container_name: clickhouse-init
     depends_on:
-      - kafka
+      clickhouse:
+        condition: service_healthy
+    volumes:
+      - ./scripts/clickhouse_init.sql:/init.sql
+    entrypoint: >
+      /bin/sh -c "
+        echo 'Initializing ClickHouse tables...' &&
+        clickhouse-client --host clickhouse --port 9000 -n --queries-file /init.sql &&
+        echo 'ClickHouse tables initialized successfully.'
+      "
     networks:
       - pipeline-net
-    restart: on-failure
+    restart: "no"
+
+#   # ---------------------------------------------------------------------------
+#   # 6. EVENTSIM — Simulated Event Data Generator → Kafka
+#   # ---------------------------------------------------------------------------
+#   eventsim:
+#     image: trivadis/eventsim:latest
+#     deploy:
+#       replicas: 5
+#     volumes:
+#       - ./eventsim/examples:/config
+#     environment:
+#       KAFKA_BROKER_LIST: kafka:9092
+#       KAFKA_TOPIC: music_events
+#     command:
+#       - "--config"
+#       - "/config/example-config.json"
+#       - "--nusers"
+#       - "10000"
+#       - "--end-time"
+#       - "2030-01-01T00:00:00"
+#       - "--continuous"
+#     depends_on:
+#       kafka-init:
+#         condition: service_completed_successfully
+#     networks:
+#       - pipeline-net
+#     restart: on-failure
+
+  # ---------------------------------------------------------------------------
+  # 6b. KAFKA INIT — Pre-create topics before Spark starts
+  # ---------------------------------------------------------------------------
+  kafka-init:
+    image: confluentinc/cp-kafka:7.6.1
+    container_name: kafka-init
+    depends_on:
+      - kafka
+    entrypoint: ["/bin/sh", "-c"]
+    command:
+      - |
+        echo 'Waiting for Kafka to be ready...'
+        cub kafka-ready -b kafka:9092 1 30
+        kafka-topics --create --if-not-exists --bootstrap-server kafka:9092 --replication-factor 1 --partitions 1 --topic music_events
+        echo 'Topic music_events created successfully.'
+    networks:
+      - pipeline-net
+    restart: "no"
 
   # ---------------------------------------------------------------------------
   # 7. SPARK — PySpark Structured Streaming (Kafka → MinIO)
@@ -192,8 +246,12 @@ services:
     depends_on:
       minio:
         condition: service_healthy
+      minio-init:
+        condition: service_completed_successfully
       kafka:
         condition: service_started
+      kafka-init:
+        condition: service_completed_successfully
     volumes:
       - spark-checkpoints:/app/checkpoints
       - spark-logs:/app/logs
@@ -228,31 +286,15 @@ services:
   airflow-init:
     <<: *airflow-common
     container_name: airflow-init
-    command: >
-      bash -c "
+    command:
+      - bash
+      - -c
+      - |
         airflow db migrate &&
-        airflow users create
-          --username admin
-          --password admin
-          --firstname Admin
-          --lastname User
-          --role Admin
-          --email admin@example.com &&
-        airflow connections add 'minio_default'
-          --conn-type 'aws'
-          --conn-extra '{\"endpoint_url\": \"http://minio:9050\", \"aws_access_key_id\": \"minioadmin\", \"aws_secret_access_key\": \"minioadmin\"}' || true &&
-        airflow connections add 'clickhouse_default'
-          --conn-type 'clickhouse'
-          --conn-host 'clickhouse'
-          --conn-port 9000
-          --conn-login 'default'
-          --conn-password ''
-          --conn-schema 'music_analytics' || true &&
-        airflow connections add 'spark_default'
-          --conn-type 'spark'
-          --conn-host 'local'
-          --conn-extra '{\"master\": \"local[*]\"}' || true
-      "
+        airflow users create --username admin --password admin --firstname Admin --lastname User --role Admin --email admin@example.com &&
+        airflow connections add 'minio_default' --conn-type 'aws' --conn-extra '{"endpoint_url": "http://minio:9050", "aws_access_key_id": "minioadmin", "aws_secret_access_key": "minioadmin"}' || true &&
+        airflow connections add 'clickhouse_default' --conn-type 'clickhouse' --conn-host 'clickhouse' --conn-port 9000 --conn-login 'default' --conn-password '' --conn-schema 'music_analytics' || true &&
+        airflow connections add 'spark_default' --conn-type 'spark' --conn-host 'local' --conn-extra '{"master": "local[*]"}' || true
     restart: "no"
 
   # ---------------------------------------------------------------------------
@@ -280,6 +322,25 @@ services:
       airflow-init:
         condition: service_completed_successfully
     restart: unless-stopped
+
+  # ---------------------------------------------------------------------------
+  # 11b. AIRFLOW TRIGGER — Auto-trigger DAG on startup
+  # ---------------------------------------------------------------------------
+  airflow-trigger:
+    <<: *airflow-common
+    container_name: airflow-trigger
+    entrypoint: >
+      /bin/bash -c "
+        echo 'Waiting 60 seconds for Airflow Webserver/Scheduler and Data Pipeline to be fully ready...'
+        sleep 60
+        echo 'Unpausing and triggering DAG: music_events_pipeline...'
+        airflow dags unpause music_events_pipeline
+        airflow dags trigger music_events_pipeline
+      "
+    depends_on:
+      airflow-scheduler:
+        condition: service_started
+    restart: "no"
 
   # ---------------------------------------------------------------------------
   # 12. STREAMLIT — Dashboard App at http://localhost:8501
