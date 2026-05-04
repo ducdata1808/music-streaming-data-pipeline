@@ -1,0 +1,6 @@
+streamlit
+pandas==2.2.2
+matplotlib
+seaborn
+colorama
+clickhouse-connect

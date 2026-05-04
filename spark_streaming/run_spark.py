@@ -18,9 +18,14 @@ class Background_colors:
     END = "\033[0m"
 
 VERBOSE = True # show log message
-LOG_FILE = "/home/duc1808/eventsim_project/logs/run_spark.log" # log file name
-MINIO_BUCKET = "music-events" # minio bucket name
-CHECKPOINT_PATH = "/home/duc1808/eventsim_project/checkpoints/music-events" # persistent checkpoint path
+
+LOG_FILE = os.environ.get("LOG_FILE", "logs/run_spark.log")
+MINIO_BUCKET = os.environ.get("MINIO_BUCKET", "music-events")
+CHECKPOINT_PATH = os.environ.get("CHECKPOINT_PATH", "checkpoints/music-events")
+MINIO_ENDPOINT = os.environ.get("MINIO_ENDPOINT", "http://localhost:9050")
+MINIO_ACCESS_KEY = os.environ.get("MINIO_ACCESS_KEY", "minioadmin")
+MINIO_SECRET_KEY = os.environ.get("MINIO_SECRET_KEY", "minioadmin")
+KAFKA_BOOTSTRAP_SERVERS = os.environ.get("KAFKA_BOOTSTRAP_SERVERS", "localhost:9092")
 
 # setup log file
 logging.basicConfig(level=logging.INFO,
@@ -39,10 +44,10 @@ def create_spark_session() -> SparkSession:
     try:
         spark = SparkSession.builder \
             .appName("SparkStreamingToMinIO") \
-            .config("spark.jars.packages", "org.apache.hadoop:hadoop-aws:3.3.4,com.amazonaws:aws-java-sdk-bundle:1.12.262,org.apache.spark:spark-sql-kafka-0-10_2.12:3.5.8") \
-            .config("spark.hadoop.fs.s3a.endpoint", "http://127.0.0.1:9050") \
-            .config("spark.hadoop.fs.s3a.access.key", "minioadmin") \
-            .config("spark.hadoop.fs.s3a.secret.key", "minioadmin") \
+            .config("spark.jars.packages", "org.apache.hadoop:hadoop-aws:3.3.4,com.amazonaws:aws-java-sdk-bundle:1.12.262,org.apache.spark:spark-sql-kafka-0-10_2.12:3.5.3") \
+            .config("spark.hadoop.fs.s3a.endpoint", MINIO_ENDPOINT) \
+            .config("spark.hadoop.fs.s3a.access.key", MINIO_ACCESS_KEY) \
+            .config("spark.hadoop.fs.s3a.secret.key", MINIO_SECRET_KEY) \
             .config("spark.hadoop.fs.s3a.path.style.access", "true") \
             .config("spark.hadoop.fs.s3a.impl", "org.apache.hadoop.fs.s3a.S3AFileSystem") \
             .config("spark.hadoop.fs.s3a.aws.credentials.provider", "org.apache.hadoop.fs.s3a.SimpleAWSCredentialsProvider") \
@@ -69,10 +74,11 @@ def connect_to_kafka(spark_conn: SparkSession) -> Optional[DataFrame]:
     try:
         spark_df = spark_conn.readStream \
             .format("kafka") \
-            .option("kafka.bootstrap.servers", "localhost:9092") \
+            .option("kafka.bootstrap.servers", KAFKA_BOOTSTRAP_SERVERS) \
             .option("subscribe", "music_events") \
             .option("startingOffsets", "earliest") \
             .option("maxOffsetsPerTrigger", 5000) \
+            .option("failOnDataLoss", "false") \
             .load()
         logger.info("Connected to Kafka successfully")
         verbose_output(

@@ -74,11 +74,11 @@ To spin up the entire pipeline, make sure you have granted execution p instances
    ```
 4. **Start the Data Stream**:
    ```bash
-   ~/eventsim_project/scripts/run_eventsim.sh
+   ~/eventsim_project/scripts/run_eventsim_local.sh
    ```
    Turn on Kafka consumer to check the data stream:
    ```bash
-   ~/eventsim_project/scripts/run_kafka_consumer.sh
+   ~/eventsim_project/scripts/run_kafka_consumer_local.sh
    ```
 5. **Start the Data Lake**:
    ```bash
@@ -98,13 +98,77 @@ To spin up the entire pipeline, make sure you have granted execution p instances
    ```
 8. **Orchestrate Transformations**:
    ```bash
-   source ~/eventsim_project/scripts/activate_venv.sh
    ~/eventsim_project/scripts/run_airflow.sh
-   # And to run the pipeline visually/manually:
-   ~/eventsim_project/scripts/trigger_airflow.sh
    ```
+   Then open the Airflow Web UI to trigger the DAG manually:
+   - Go to **http://localhost:8080** and log in (username: `admin`, password: `admin`)
+   - Find the DAG named **`music_events_pipeline`** in the list
+   - Click the **toggle** on the left to unpause it (if it's grey/off)
+   - Click the **▶ Trigger DAG** button (play icon on the right) to run it manually
+   - Click on the DAG name to monitor the progress of each task in the Graph view
 9. **Run app to check the result**:
    ```bash
    ~/eventsim_project/scripts/run_app.sh
    ```
    ![image not found](images/top_artists.png)
+
+---
+
+## 🐳 Alternative: Run with Docker + Manual EventSim
+
+This approach runs all infrastructure services (Kafka, MinIO, Spark, ClickHouse, Airflow) inside Docker, while EventSim is run manually from your local machine to push data into the Dockerized Kafka.
+
+> **Why run EventSim manually?** EventSim uses an old Kafka client library that is incompatible with modern Kafka (3.x). The workaround is to pipe its output through the local `kafka-console-producer.sh` tool, which only works correctly when run on the host machine.
+
+### Prerequisites
+- Docker Desktop is running
+- All scripts have execution permission: `chmod +x ~/eventsim_project/scripts/*.sh`
+
+### Step-by-step
+
+1. **Start all infrastructure services** (Kafka, MinIO, Spark, ClickHouse, Airflow):
+   ```bash
+   cd ~/eventsim_project
+   docker compose up -d
+   ```
+   Wait ~30 seconds for all services to initialize.
+
+2. **Verify services are healthy**:
+   ```bash
+   docker compose ps
+   ```
+   All containers should show status `running` or `exited (0)` for init containers.
+
+3. **Start the EventSim data stream** (runs on local machine, pushes to Docker Kafka on port 29092):
+   ```bash
+   ~/eventsim_project/scripts/run_eventsim_docker.sh
+   ```
+   Open additional terminals and run the same script to increase data throughput.
+
+4. **Verify data is reaching Kafka** (optional check):
+   ```bash
+   ~/eventsim_project/scripts/run_kafka_consumer_docker.sh
+   ```
+   You should see JSON events streaming in. Press `Ctrl+C` to stop.
+
+5. **Monitor Spark writing to MinIO**:
+   - Open MinIO Console: **http://localhost:9051** (user: `minioadmin`, pass: `minioadmin`)
+   - Navigate to bucket **`music-events`** → folder **`data/`**
+   - Parquet files should appear within 1–2 minutes of EventSim running.
+
+6. **Trigger the Airflow DAG**:
+   - Open Airflow UI: **http://localhost:8080** (user: `admin`, pass: `admin`)
+   - Find DAG **`music_events_pipeline`** → unpause it → click **▶ Trigger DAG**
+
+7. **View the results**:
+   - Open the Streamlit app: **http://localhost:8501**
+   - Or run it locally: `~/eventsim_project/scripts/run_app.sh`
+
+### Stop all services
+```bash
+docker compose down
+```
+To also remove all data volumes (clean slate):
+```bash
+docker compose down -v
+```

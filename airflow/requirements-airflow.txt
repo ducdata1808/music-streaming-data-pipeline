@@ -1,0 +1,10 @@
+dbt-core==1.8.0
+dbt-clickhouse==1.8.0
+
+pandas==2.2.2
+python-dotenv==1.0.1
+
+boto3
+
+clickhouse-driver
+clickhouse-connect
