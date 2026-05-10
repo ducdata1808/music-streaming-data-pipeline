@@ -74,19 +74,19 @@ def create_spark_session() -> SparkSession:
 def main():
     spark = create_spark_session()
     
-    # 1. Read input data from ClickHouse
-    verbose_output(f"{Background_colors.CYAN} Reading mart_user_play_counts from ClickHouse at {CLICKHOUSE_HOST}:{CLICKHOUSE_PORT}...")
-    jdbc_url = f"jdbc:clickhouse://{CLICKHOUSE_HOST}:{CLICKHOUSE_PORT}/music_analytics"
+    # 1. Read input data from ClickHouse using native clickhouse_driver
+    verbose_output(f"{Background_colors.CYAN} Reading mart_user_play_counts from ClickHouse at {CLICKHOUSE_HOST}:9000...")
+    from clickhouse_driver import Client
+    import pandas as pd
     
     try:
-        df = spark.read \
-            .format("jdbc") \
-            .option("url", jdbc_url) \
-            .option("user", CLICKHOUSE_USER) \
-            .option("password", CLICKHOUSE_PASSWORD) \
-            .option("dbtable", "mart_user_play_counts") \
-            .option("driver", "com.clickhouse.jdbc.ClickHouseDriver") \
-            .load()
+        client = Client(host=CLICKHOUSE_HOST, port=9000, user=CLICKHOUSE_USER, password=CLICKHOUSE_PASSWORD)
+        query = "SELECT user_id, song, artist, play_count FROM music_analytics.mart_user_play_counts"
+        data, columns = client.execute(query, with_column_types=True)
+        col_names = [c[0] for c in columns]
+        
+        pdf = pd.DataFrame(data, columns=col_names)
+        df = spark.createDataFrame(pdf)
         
         row_count = df.count()
         verbose_output(f"{Background_colors.GREEN} Successfully read {row_count} rows from ClickHouse")
