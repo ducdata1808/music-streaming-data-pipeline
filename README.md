@@ -86,6 +86,7 @@ To spin up the entire pipeline, make sure you have granted execution p instances
    ~/eventsim_project/scripts/run_minio.sh
    ```
 6. **Start Spark Processor**:
+   Delete checkpoint folder (eventsim_project/checkpoints) and bucket music-events (MinIO Console) manually, then run this script
    ```bash
    ~/eventsim_project/scripts/run_spark.sh
    ```
