@@ -136,10 +136,11 @@ check_dbt = ClickHouseOperator(
 )
 
 # task 6: run ALS model for recommendations
-run_als = SparkSubmitOperator(
+# using BashOperator to bypass Airflow's default 'spark_default' yarn connection
+from airflow.operators.bash import BashOperator
+run_als = BashOperator(
     task_id='run_als',
-    application=ALS_APP_PATH,
-    packages="org.apache.hadoop:hadoop-aws:3.3.4,com.amazonaws:aws-java-sdk-bundle:1.12.262,com.clickhouse:clickhouse-jdbc:0.4.6",
+    bash_command=f"spark-submit --master 'local[*]' --packages org.apache.hadoop:hadoop-aws:3.3.4,com.amazonaws:aws-java-sdk-bundle:1.12.262,com.clickhouse:clickhouse-jdbc:0.4.6 {ALS_APP_PATH}",
     dag=dag,
 )
 
