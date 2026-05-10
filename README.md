@@ -95,7 +95,13 @@ To spin up the entire pipeline, make sure you have granted execution p instances
 7. **Start Analytics Database**:
    ```bash
    ~/eventsim_project/scripts/run_clickhouse.sh
+   ```
+   *Important*: Initialize the tables manually when running locally by executing the SQL script:
+   ```bash
+   clickhouse-client --queries-file ~/eventsim_project/scripts/clickhouse_init_local.sql
+   ```
    # And to interact with it:
+   ```bash
    ~/eventsim_project/scripts/clickhouse_client.sh
    ```
 8. **Orchestrate Transformations**:
