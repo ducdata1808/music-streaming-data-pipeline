@@ -17,7 +17,7 @@ fi
 
 cd "$EVENTSIM_DIR" || { echo "ERROR: EventSim not found at $EVENTSIM_DIR"; exit 1; }
 
-# Kết nối vào Kafka chạy trên LOCAL (cổng 9092)
+# connect to kafka topic music_events (local)
 stdbuf -oL ./bin/eventsim -c "examples/example-config.json" \
     -n 2000 \
     --start-time "$(date -u +"%Y-%m-%dT%H:%M:%S")" \

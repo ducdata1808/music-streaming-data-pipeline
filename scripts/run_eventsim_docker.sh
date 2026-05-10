@@ -17,7 +17,7 @@ fi
 
 cd "$EVENTSIM_DIR" || { echo "ERROR: EventSim not found at $EVENTSIM_DIR"; exit 1; }
 
-# Kết nối vào Kafka chạy trong DOCKER (cổng 29092 - external listener)
+# connect to kafka topic music_events (docker)
 stdbuf -oL ./bin/eventsim -c "examples/example-config.json" \
     -n 2000 \
     --start-time "$(date -u +"%Y-%m-%dT%H:%M:%S")" \

@@ -24,3 +24,14 @@ CREATE TABLE IF NOT EXISTS events
     length Float32
 )
 ENGINE = S3('http://localhost:9050/music-events/data/*.parquet', 'minioadmin', 'minioadmin', 'Parquet');
+
+DROP TABLE IF EXISTS recommendations;
+CREATE TABLE IF NOT EXISTS recommendations
+(
+    user_id     String,
+    rec_rank    UInt8,
+    song        String,
+    artist      String,
+    score       Float32
+)
+ENGINE = S3('http://localhost:9050/music-events/recommendations/*.parquet', 'minioadmin', 'minioadmin', 'Parquet');

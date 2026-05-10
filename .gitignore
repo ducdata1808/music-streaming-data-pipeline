@@ -80,3 +80,4 @@ run_spark.log
 
 # Data directory (Spark intermediate output)
 data/
+logs/

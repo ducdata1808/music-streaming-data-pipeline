@@ -160,6 +160,7 @@ def write_to_minio(df: DataFrame, bucket_name: str, checkpoint_path: str): # wri
         df.writeStream \
             .format("parquet") \
             .outputMode("append") \
+            .trigger(processingTime='1 minute') \
             .option("checkpointLocation", checkpoint_path) \
             .option("path", f"s3a://{bucket_name}/data") \
             .start()

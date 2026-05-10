@@ -17,6 +17,7 @@ export AIRFLOW__CORE__DAGS_FOLDER="$HOME/eventsim_project/airflow"
 
 # Local paths for DAG tasks (overrides Docker defaults in dag.py)
 export SPARK_APP_PATH="$HOME/eventsim_project/spark_streaming/run_spark.py"
+export ALS_APP_PATH="$HOME/eventsim_project/spark_streaming/run_als.py"
 export DBT_PROJECT_DIR="$HOME/eventsim_project/dbt"
 export MINIO_ENDPOINT="http://localhost:9050"
 export CLICKHOUSE_HOST="localhost"

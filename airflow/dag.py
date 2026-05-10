@@ -13,6 +13,7 @@ import os
 
 # Parameters
 SPARK_APP_PATH = os.environ.get("SPARK_APP_PATH", "/opt/airflow/spark_streaming/run_spark.py")
+ALS_APP_PATH = os.environ.get("ALS_APP_PATH", "/opt/airflow/spark_streaming/run_als.py")
 MINIO_BUCKET = os.environ.get("MINIO_BUCKET", "music-events")
 DBT_PROJECT_DIR = os.environ.get("DBT_PROJECT_DIR", "/opt/airflow/dbt")
 DBT_PROFILE_NAME = os.environ.get("DBT_PROFILE_NAME", "music_events_transform")
@@ -117,18 +118,56 @@ check_dbt = ClickHouseOperator(
         "SELECT count() FROM music_analytics.stg_events",
         "SELECT count() FROM music_analytics.fct_listens",
 
-        # 2. check mart table
+        # 2. check mart tables
         "SELECT count() FROM music_analytics.mart_top_artists",
         "SELECT count() FROM music_analytics.mart_hourly_trends",
         "SELECT count() FROM music_analytics.mart_location_stats",
+        "SELECT count() FROM music_analytics.mart_user_play_counts",
 
         # 3. spot-check data
         "SELECT artist, play_count FROM music_analytics.mart_top_artists ORDER BY play_count DESC LIMIT 5",
         "SELECT hour_timestamp, total_listens FROM music_analytics.mart_hourly_trends ORDER BY hour_timestamp DESC LIMIT 5",
         "SELECT location, total_plays FROM music_analytics.mart_location_stats ORDER BY total_plays DESC LIMIT 5",
+
+        # 4. spot-check ALS input matrix
+        "SELECT user_id, song, play_count FROM music_analytics.mart_user_play_counts ORDER BY play_count DESC LIMIT 5",
     ],
     dag=dag,
 )
 
-# task dependencies (Task 1 bỏ ra ngoài — Spark chạy thủ công)
-check_minio >> check_clickhouse >> dbt_task_group >> check_dbt
+# task 6: run ALS model for recommendations
+# using BashOperator to bypass Airflow's default 'spark_default' yarn connection
+from airflow.operators.bash import BashOperator
+run_als = BashOperator(
+    task_id='run_als',
+    bash_command=f"spark-submit --master 'local[*]' --packages org.apache.hadoop:hadoop-aws:3.3.4,com.amazonaws:aws-java-sdk-bundle:1.12.262,com.clickhouse:clickhouse-jdbc:0.4.6 {ALS_APP_PATH}",
+    dag=dag,
+)
+
+# task 7: verify recommendations were written
+def check_recommendations_in_minio(**context):
+    s3 = boto3.client(
+        's3',
+        endpoint_url=MINIO_ENDPOINT_URL,
+        aws_access_key_id=MINIO_ACCESS_KEY,
+        aws_secret_access_key=MINIO_SECRET_KEY,
+    )
+    # Prefix='recommendations' matches Spark's path s3a://music-events/recommendations
+    response = s3.list_objects_v2(Bucket='music-events', Prefix='recommendations')
+    all_files = response.get('Contents', [])
+    print(f"[check_recommendations] total files in recommendations: {len(all_files)}")
+    
+    parquet_files = [f for f in all_files if f['Key'].endswith('.parquet')]
+    print(f"[check_recommendations] found {len(parquet_files)} parquet files")
+    
+    if len(parquet_files) == 0:
+        raise ValueError("No recommendation parquet files found in MinIO!")
+
+check_recommendations = PythonOperator(
+    task_id='check_recommendations',
+    python_callable=check_recommendations_in_minio,
+    dag=dag,
+)
+
+# task dependencies
+check_minio >> check_clickhouse >> dbt_task_group >> check_dbt >> run_als >> check_recommendations
