@@ -117,15 +117,19 @@ check_dbt = ClickHouseOperator(
         "SELECT count() FROM music_analytics.stg_events",
         "SELECT count() FROM music_analytics.fct_listens",
 
-        # 2. check mart table
+        # 2. check mart tables
         "SELECT count() FROM music_analytics.mart_top_artists",
         "SELECT count() FROM music_analytics.mart_hourly_trends",
         "SELECT count() FROM music_analytics.mart_location_stats",
+        "SELECT count() FROM music_analytics.mart_user_play_counts",
 
         # 3. spot-check data
         "SELECT artist, play_count FROM music_analytics.mart_top_artists ORDER BY play_count DESC LIMIT 5",
         "SELECT hour_timestamp, total_listens FROM music_analytics.mart_hourly_trends ORDER BY hour_timestamp DESC LIMIT 5",
         "SELECT location, total_plays FROM music_analytics.mart_location_stats ORDER BY total_plays DESC LIMIT 5",
+
+        # 4. spot-check ALS input matrix
+        "SELECT user_id, song, play_count FROM music_analytics.mart_user_play_counts ORDER BY play_count DESC LIMIT 5",
     ],
     dag=dag,
 )
