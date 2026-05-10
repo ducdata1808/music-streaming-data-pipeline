@@ -26,6 +26,7 @@ This project simulates user listening behavior and pipes the data through an end
 │   ├── scripts/             # Shell scripts to manage services (start, stop, etc.)
 │   ├── setup/               # Setup guides for each service (.md files)
 │   ├── spark_streaming/     # PySpark structured streaming scripts
+│   ├── docker-compose.yaml  # Docker Compose configuration for all services
 │   └── README.md            # Project documentation
 ├── eventsim/                # EventSim (Data Generator) repository clone
 ├── kafka_2.13-3.6.1/        # Kafka installation binaries & properties
