@@ -93,16 +93,18 @@ jobs:
 
       # -----------------------------------------------------------------------
       # 7. Validate MinIO: music-events bucket was created by minio-init
+      #    Use curl directly against localhost (port 9050 is mapped to host)
+      #    S3 ListBuckets API → returns XML containing bucket names
       # -----------------------------------------------------------------------
       - name: Validate MinIO bucket
         run: |
-          docker run --rm \
-            --network eventsim_project_pipeline-net \
-            minio/mc:latest \
-            bash -c "
-              mc alias set local http://minio:9050 minioadmin minioadmin &&
-              mc ls local/music-events
-            "
+          echo "--- Querying MinIO S3 API for bucket list ---"
+          RESPONSE=$(curl -sf \
+            --user minioadmin:minioadmin \
+            --aws-sigv4 "aws:amz:us-east-1:s3" \
+            "http://localhost:9050/")
+          echo "$RESPONSE"
+          echo "$RESPONSE" | grep -q "music-events"
           echo "Bucket music-events exists"
 
       # -----------------------------------------------------------------------
