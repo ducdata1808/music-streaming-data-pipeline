@@ -1,0 +1,146 @@
+name: CI — Docker Compose Stack Validation
+
+on:
+  push:
+    branches: [ main, dev ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  docker-compose-check:
+    name: Validate Docker Compose Stack
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      # -----------------------------------------------------------------------
+      # 1. Checkout source code
+      # -----------------------------------------------------------------------
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # -----------------------------------------------------------------------
+      # 2. Set up Docker Buildx (faster parallel image builds)
+      # -----------------------------------------------------------------------
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      # -----------------------------------------------------------------------
+      # 3. Build custom Docker images (fail fast if any Dockerfile is broken)
+      #    Spark is excluded — its errors only show at runtime with real data.
+      # -----------------------------------------------------------------------
+      - name: Build custom Docker images
+        run: |
+          echo "=== Building Airflow image ==="
+          docker compose build airflow-webserver
+
+          echo "=== Building Streamlit image ==="
+          docker compose build streamlit
+
+      # -----------------------------------------------------------------------
+      # 4. Start core infrastructure services only
+      #    Excluded: airflow, spark, streamlit (too RAM-heavy for CI runner)
+      # -----------------------------------------------------------------------
+      - name: Start core infrastructure
+        run: |
+          docker compose up -d \
+            zookeeper \
+            kafka \
+            minio \
+            minio-init \
+            clickhouse \
+            clickhouse-init \
+            kafka-init
+
+      # -----------------------------------------------------------------------
+      # 5. Wait for all services to become healthy
+      # -----------------------------------------------------------------------
+      - name: Wait for MinIO to be healthy
+        run: |
+          timeout 90 bash -c \
+            'until curl -sf http://localhost:9050/minio/health/live; do sleep 3; done'
+          echo "MinIO is healthy"
+
+      - name: Wait for ClickHouse to be healthy
+        run: |
+          timeout 90 bash -c \
+            'until curl -sf http://localhost:8123/ping; do sleep 3; done'
+          echo "ClickHouse is healthy"
+
+      - name: Wait for Kafka to be healthy
+        run: |
+          timeout 90 bash -c \
+            'until docker exec kafka kafka-topics \
+              --list --bootstrap-server localhost:9092 2>/dev/null; \
+            do sleep 3; done'
+          echo "Kafka is healthy"
+
+      # -----------------------------------------------------------------------
+      # 6. Validate ClickHouse: database and tables exist
+      # -----------------------------------------------------------------------
+      - name: Validate ClickHouse tables
+        run: |
+          echo "--- Checking music_analytics database ---"
+          docker exec clickhouse clickhouse-client \
+            --query "SHOW DATABASES" | grep -q "music_analytics"
+          echo "Database music_analytics exists"
+
+          echo "--- Checking events table ---"
+          docker exec clickhouse clickhouse-client \
+            --database music_analytics \
+            --query "SHOW TABLES" | grep -q "events"
+          echo "Table events exists"
+
+      # -----------------------------------------------------------------------
+      # 7. Validate MinIO: music-events bucket was created by minio-init
+      # -----------------------------------------------------------------------
+      - name: Validate MinIO bucket
+        run: |
+          docker run --rm \
+            --network eventsim_project_pipeline-net \
+            minio/mc:latest \
+            bash -c "
+              mc alias set local http://minio:9050 minioadmin minioadmin &&
+              mc ls local/music-events
+            "
+          echo "Bucket music-events exists"
+
+      # -----------------------------------------------------------------------
+      # 8. Validate Kafka: music_events topic was created by kafka-init
+      # -----------------------------------------------------------------------
+      - name: Validate Kafka topic
+        run: |
+          docker exec kafka kafka-topics \
+            --list \
+            --bootstrap-server localhost:9092 \
+          | grep -q "music_events"
+          echo "Kafka topic music_events exists"
+
+      # -----------------------------------------------------------------------
+      # 9. Print all container logs on failure (for debugging CI failures)
+      # -----------------------------------------------------------------------
+      - name: Print container logs on failure
+        if: failure()
+        run: |
+          echo "=== zookeeper ==="
+          docker compose logs zookeeper --tail=30
+          echo "=== kafka ==="
+          docker compose logs kafka --tail=30
+          echo "=== kafka-init ==="
+          docker compose logs kafka-init
+          echo "=== minio ==="
+          docker compose logs minio --tail=30
+          echo "=== minio-init ==="
+          docker compose logs minio-init
+          echo "=== clickhouse ==="
+          docker compose logs clickhouse --tail=30
+          echo "=== clickhouse-init ==="
+          docker compose logs clickhouse-init
+
+      # -----------------------------------------------------------------------
+      # 10. Cleanup — always runs even if previous steps fail
+      # -----------------------------------------------------------------------
+      - name: Tear down all containers
+        if: always()
+        run: docker compose down -v --remove-orphans
+
