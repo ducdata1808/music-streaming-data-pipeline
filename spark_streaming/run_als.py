@@ -81,7 +81,17 @@ def main():
     
     try:
         client = Client(host=CLICKHOUSE_HOST, port=9000, user=CLICKHOUSE_USER, password=CLICKHOUSE_PASSWORD)
-        query = "SELECT user_id, song, artist, play_count FROM music_analytics.mart_user_play_counts"
+        # Chỉ lấy những user có tổng lượt nghe từ 3 lần trở lên để giảm thiểu ma trận rác
+        query = """
+            SELECT user_id, song, artist, play_count 
+            FROM music_analytics.mart_user_play_counts
+            WHERE user_id IN (
+                SELECT user_id 
+                FROM music_analytics.mart_user_play_counts 
+                GROUP BY user_id 
+                HAVING sum(play_count) >= 3
+            )
+        """
         data, columns = client.execute(query, with_column_types=True)
         col_names = [c[0] for c in columns]
         
@@ -89,7 +99,7 @@ def main():
         df = spark.createDataFrame(pdf)
         
         row_count = df.count()
-        verbose_output(f"{Background_colors.GREEN} Successfully read {row_count} rows from ClickHouse")
+        verbose_output(f"{Background_colors.GREEN} Successfully read {row_count} rows from ClickHouse (filtered active users)")
         logger.info(f"Read {row_count} rows from mart_user_play_counts")
         
         if row_count < 100:
@@ -120,7 +130,7 @@ def main():
         ratingCol="play_count",
         implicitPrefs=True,       # Implicit feedback
         coldStartStrategy="drop", # Ignore users/songs with no history
-        rank=50,                  # Number of latent factors
+        rank=10,                  # Đã giảm từ 50 xuống 10 để tăng tốc độ nhân ma trận gấp 5 lần
         maxIter=10,
         regParam=0.1
     )

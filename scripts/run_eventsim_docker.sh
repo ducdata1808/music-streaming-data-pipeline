@@ -20,6 +20,6 @@ cd "$EVENTSIM_DIR" || { echo "ERROR: EventSim not found at $EVENTSIM_DIR"; exit 
 # connect to kafka topic music_events (docker)
 stdbuf -oL ./bin/eventsim -c "examples/example-config.json" \
     -n 2000 \
-    --start-time "$(date -u +"%Y-%m-%dT%H:%M:%S")" \
+    --start-time "$(date -d "30 days ago" +"%Y-%m-%dT%H:%M:%S")" \
     --end-time "2099-12-31T23:59:59" \
-    --continuous | grep --line-buffered '^{' | stdbuf -i0 -oL "$KAFKA_PRODUCER" --bootstrap-server localhost:29092 --topic music_events
+    | grep --line-buffered '^{' | stdbuf -i0 -oL "$KAFKA_PRODUCER" --bootstrap-server localhost:29092 --topic music_events

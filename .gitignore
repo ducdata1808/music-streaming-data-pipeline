@@ -68,7 +68,7 @@ minio
 clickhouse
 minio_data/
 clickhouse_data/
-eventsim/target/
+eventsim/
 
 # My files / temp files
 note.txt
