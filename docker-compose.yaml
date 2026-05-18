@@ -360,6 +360,7 @@ services:
       clickhouse:
         condition: service_healthy
     volumes:
+      - ./app:/app
       - streamlit-logs:/app/logs
     networks:
       - pipeline-net
