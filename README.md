@@ -91,7 +91,7 @@ To spin up the entire pipeline, make sure you have granted execution p instances
    ~/eventsim_project/scripts/run_spark.sh
    ```
    Turn on browser, go to http://localhost:9051/login, user: minioadmin, password: minioadmin
-   ![image not found](images/minio_web.png)
+   ![image not found](images/Minio.png)
 7. **Start Analytics Database**:
    ```bash
    ~/eventsim_project/scripts/run_clickhouse.sh
@@ -114,11 +114,15 @@ To spin up the entire pipeline, make sure you have granted execution p instances
    - Click the **toggle** on the left to unpause it (if it's grey/off)
    - Click the **▶ Trigger DAG** button (play icon on the right) to run it manually
    - Click on the DAG name to monitor the progress of each task in the Graph view
+   ![image not found](images/dag.png)
 9. **Run app to check the result**:
    ```bash
    ~/eventsim_project/scripts/run_app.sh
    ```
-   ![image not found](images/top_artists.png)
+   ![image not found](images/overview.png)
+   ![image not found](images/areas.png)
+   ![image not found](images/for_you.png)
+   
 
 ---
 
